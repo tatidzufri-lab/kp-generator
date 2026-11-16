@@ -1,0 +1,126 @@
+@page {
+  size: A4;
+  margin: 14mm 15mm 16mm 15mm;
+  background: var(--bg);
+  @bottom-left { font: 7.5pt var(--body); color: var(--muted); }
+  @bottom-right { content: counter(page) " / " counter(pages); font: 7.5pt var(--body); color: var(--muted); }
+}
+
+* { box-sizing: border-box; }
+html { background: var(--bg); }
+body {
+  margin: 0;
+  font-family: var(--body);
+  font-size: 9.2pt;
+  line-height: 1.45;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--primary); text-decoration: none; border-bottom: 1px solid var(--line); }
+h1, h2, h3 { font-family: var(--heading); color: var(--primary); margin: 0; line-height: 1.2; }
+h1 { font-size: 20pt; font-weight: 700; letter-spacing: -0.01em; margin: 1.5mm 0 4mm; }
+h2 { font-size: 12.5pt; font-weight: 700; margin: 0 0 2.5mm; }
+h3 { font-size: 9.2pt; font-weight: 600; margin: 3mm 0 1.2mm; }
+p { margin: 0 0 2mm; }
+ul, ol { margin: 0; padding-left: 5mm; }
+li { margin: 0 0 .8mm; }
+section { margin: 0 0 6mm; }
+.keep { break-inside: avoid; }
+
+/* шапка */
+.top {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  padding-bottom: 3mm; border-bottom: 2.5pt solid var(--accent); margin-bottom: 6mm;
+}
+.who-name { font-family: var(--heading); font-weight: 700; font-size: 12pt; color: var(--primary); }
+.who-title { color: var(--muted); font-size: 8.6pt; }
+.contacts { text-align: right; font-size: 8.4pt; color: var(--muted); line-height: 1.45; }
+
+.demo {
+  margin: -4mm 0 6mm; padding: 2mm 3mm; font-size: 8.4pt;
+  border: 1px dashed var(--accent); border-radius: 2mm; color: var(--text); background: var(--tint);
+}
+
+.eyebrow { font-size: 8.4pt; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.meta { display: flex; gap: 8mm; margin: 0; padding: 3mm 4mm; background: var(--tint); border-radius: 2mm; }
+.meta div { min-width: 0; }
+.meta dt { font-size: 7.6pt; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.meta dd { margin: 0; font-weight: 600; color: var(--primary); }
+
+.lead { font-size: 10.2pt; line-height: 1.5; }
+
+.items { list-style: none; padding: 0; }
+.items li { position: relative; padding-left: 5mm; }
+.items li::before {
+  content: ""; position: absolute; left: 0; top: .62em;
+  width: 2.2mm; height: 2.2mm; border-radius: 50%; background: var(--accent);
+}
+.chips { display: flex; flex-wrap: wrap; gap: 1.5mm; }
+.chips span {
+  font-size: 8.2pt; padding: .6mm 2.4mm; border-radius: 3mm;
+  border: 1px solid var(--line); color: var(--primary); background: var(--tint);
+}
+
+/* кейсы */
+.cases { display: flex; flex-wrap: wrap; gap: 3mm; }
+.cases .case { flex: 1 1 45%; margin: 0; }
+.case {
+  break-inside: avoid; padding: 3mm 4mm; margin: 0 0 3mm;
+  border-left: 2pt solid var(--accent); background: var(--tint); border-radius: 0 2mm 2mm 0;
+}
+.case-head { display: flex; align-items: baseline; gap: 2mm; flex-wrap: wrap; }
+.case-title { font-family: var(--heading); font-weight: 700; color: var(--primary); font-size: 10pt; }
+.tag {
+  font-size: 7.4pt; padding: .2mm 1.8mm; border-radius: 2mm;
+  background: var(--accent-soft); color: var(--text); white-space: nowrap;
+}
+.case-why { margin: 1mm 0 1.2mm; }
+.case-results { font-size: 8.4pt; color: var(--text); }
+.case-link { display: inline-block; font-size: 8pt; margin-top: 1mm; }
+.all-cases { font-size: 8.4pt; color: var(--muted); margin-top: 2.5mm; }
+
+/* сроки и стоимость */
+table.plan { width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 3mm; }
+.plan th {
+  text-align: left; font-size: 7.6pt; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--muted); font-weight: 600; padding: 0 2mm 1.5mm; border-bottom: 1px solid var(--line);
+}
+.plan td { padding: 2mm; border-bottom: 1px solid var(--line); vertical-align: top; }
+.plan .num { text-align: right; white-space: nowrap; }
+.plan .stage-name { font-weight: 600; color: var(--primary); width: 30%; }
+.plan tr.soft td { color: var(--muted); }
+.plan tfoot td {
+  font-weight: 700; color: var(--primary); border-bottom: 0;
+  border-top: 1.5pt solid var(--primary); font-size: 10pt;
+}
+.payment { margin: 2mm 0 1mm; }
+.terms { display: flex; gap: 6mm; }
+.terms > div { flex: 1; }
+.terms ul { font-size: 9pt; }
+
+.block { padding: 3mm 4mm; border: 1px solid var(--line); border-radius: 2mm; }
+.block h3 { margin-top: 0; }
+.block p { margin: 0; }
+
+.next ol { padding-left: 5mm; }
+.questions { margin-top: 3mm; color: var(--muted); }
+
+/* превью в браузере: лист A4 на фоне */
+@media screen {
+  html { background: var(--screen-bg); }
+  body { padding: 24px 16px; background: transparent; }
+  .doc {
+    max-width: 210mm; margin: 0 auto; padding: 16mm;
+    background: var(--bg); box-shadow: 0 2px 18px rgba(0, 0, 0, .08); border-radius: 4px;
+  }
+  @media (max-width: 640px) {
+    body { padding: 0; }
+    .doc { padding: 20px 16px; border-radius: 0; }
+    .top, .terms, .meta, .cases { flex-direction: column; align-items: flex-start; gap: 3mm; }
+    .contacts { text-align: left; }
+    table.plan, .plan tbody, .plan tr, .plan td { display: block; width: 100%; }
+    .plan thead { display: none; }
+    .plan td.num { text-align: left; }
+  }
+}

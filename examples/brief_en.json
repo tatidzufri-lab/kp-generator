@@ -1,0 +1,10 @@
+{
+  "company": "Sunset Bay Boutique Hotel",
+  "contact_name": "Mehmet, general manager",
+  "industry": "Hospitality",
+  "task": "Guests message us on Telegram and email with the same questions: check-in time, airport transfer, breakfast hours, beach access. Our two receptionists spend hours on it, and at night guests wait until morning. We want an assistant that answers in English, German and Russian from our hotel info and passes booking requests to the reception.",
+  "budget": "around $800",
+  "deadline": "before the season starts in April",
+  "notes": "Hotel info is in a 12-page PDF. Transfer requests are tracked in Google Sheets.",
+  "language": "en"
+}

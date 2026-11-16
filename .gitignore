@@ -1,0 +1,21 @@
+# секреты
+.env
+.env.*
+!.env.example
+
+# окружение
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# сгенерированные КП (могут содержать данные клиентов)
+output/
+
+# системное
+.DS_Store
+
+# внутренняя документация
+PROJECT.md
+PRICING.md
+PLAN.md

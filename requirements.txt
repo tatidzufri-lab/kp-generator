@@ -1,0 +1,8 @@
+flask>=3.1,<4
+openai>=3.51,<4
+pydantic>=2.14,<3
+jinja2>=3.1,<4
+weasyprint>=70,<71
+pyyaml>=6.0,<7
+python-dotenv>=1.2,<2
+pytest>=9.2,<10

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ t.doc_title }}: {{ p.project_title }} — {{ brief.company }}</title>
+<style>
+{% for f in font_faces %}
+@font-face { font-family: "{{ f.family }}"; font-weight: {{ f.weight }}; font-style: normal; src: url("{{ f.url }}"); }
+{% endfor %}
+:root {
+  --primary: {{ brand.primary }};
+  --accent: {{ brand.accent }};
+  --bg: {{ brand.background }};
+  --text: {{ brand.text }};
+  --muted: {{ colors.muted }};
+  --line: {{ colors.line }};
+  --tint: {{ colors.tint }};
+  --accent-soft: {{ colors.accent_soft }};
+  --screen-bg: {{ colors.screen_bg }};
+  --heading: "{{ heading_font }}", "{{ brand.body_font }}", sans-serif;
+  --body: "{{ brand.body_font }}", sans-serif;
+}
+{% include "proposal.css" %}
+@page { @bottom-left { content: {{ footer | safe }}; } }
+</style>
+</head>
+<body>
+<main class="doc">
+
+<header class="top">
+  <div class="who">
+    <div class="who-name">{{ executor.name.get(lang) }}</div>
+    <div class="who-title">{{ executor.title.get(lang) }}</div>
+  </div>
+  <div class="contacts">
+    <div>{{ executor.contacts.email }}</div>
+    {% if executor.contacts.site %}<div>{{ executor.contacts.site | replace("https://", "") }}</div>{% endif %}
+    {% if executor.contacts.telegram %}<div>{{ executor.contacts.telegram }}</div>{% endif %}
+  </div>
+</header>
+
+{% if profile.demo %}<div class="demo">{{ t.demo }}</div>{% endif %}
+
+<section class="title">
+  <div class="eyebrow">{{ t.doc_title }}</div>
+  <h1>{{ p.project_title }}</h1>
+  <dl class="meta">
+    <div><dt>{{ t.for }}</dt><dd>{{ brief.company }}{% if brief.contact_name %}, {{ brief.contact_name }}{% endif %}</dd></div>
+    <div><dt>{{ t.from }}</dt><dd>{{ executor.name.get(lang) }}</dd></div>
+    <div><dt>{{ t.date }}</dt><dd>{{ date }}</dd></div>
+  </dl>
+</section>
+
+<section>
+  <h2>{{ t.goal }}</h2>
+  <p class="lead">{{ p.goal }}</p>
+</section>
+
+<section>
+  <h2>{{ t.solution }}</h2>
+  <h3>{{ t.what }}</h3>
+  <ul class="items">
+    {% for item in p.solution_items %}<li>{{ item }}</li>{% endfor %}
+  </ul>
+  <h3>{{ t.stack }}</h3>
+  <p class="chips">{% for s in p.stack %}<span>{{ s }}</span>{% endfor %}</p>
+</section>
+
+<section class="cases-section">
+  <h2>{{ t.cases }}</h2>
+  <div class="cases">
+  {% for c in cases %}
+  <article class="case">
+    <div class="case-head">
+      <span class="case-title">{{ c.case.title.get(lang) }}</span>
+      {% if c.case.study_project %}<span class="tag">{{ t.study }}</span>{% endif %}
+    </div>
+    <p class="case-why">{{ c.why }}</p>
+    <ul class="case-results">
+      {% for r in c.case.results.get(lang) %}<li>{{ r }}</li>{% endfor %}
+    </ul>
+    {% if c.case.url %}<a class="case-link" href="{{ c.case.url.get(lang) }}">{{ t.case_link }}: {{ c.case.url.get(lang) | replace("https://", "") }}</a>{% endif %}
+  </article>
+  {% endfor %}
+  </div>
+  {% if cases_url %}<p class="all-cases">{{ t.all_cases }}: <a href="{{ cases_url }}">{{ cases_url | replace("https://", "") }}</a></p>{% endif %}
+</section>
+
+<section class="keep">
+  <h2>{{ t.timeline }} {{ "и" if lang == "ru" else "and" }} {{ t.cost | lower }}</h2>
+  <table class="plan">
+    <thead>
+      <tr><th>{{ t.stage }}</th><th>{{ t.content }}</th><th class="num">{{ t.term }}</th><th class="num">{{ t.price }}</th></tr>
+    </thead>
+    <tbody>
+      {% for st, cost in stage_rows %}
+      <tr>
+        <td class="stage-name">{{ loop.index }}. {{ st.name }}</td>
+        <td>{{ st.content }}</td>
+        <td class="num">{{ days(cost.days) }}</td>
+        <td class="num">{{ money(cost.price) }}</td>
+      </tr>
+      {% endfor %}
+      {% if approval_days %}
+      <tr class="soft"><td colspan="2">{{ t.approval }}</td><td class="num">{{ days(approval_days) }}</td><td class="num">—</td></tr>
+      {% endif %}
+    </tbody>
+    <tfoot>
+      <tr><td colspan="2">{{ t.total }}</td><td class="num">{{ days(pricing.total_days) }}</td><td class="num">{{ money(pricing.total_price) }}</td></tr>
+    </tfoot>
+  </table>
+  <p class="payment"><strong>{{ t.payment }}:</strong> {{ payment }}</p>
+  <div class="terms">
+    <div>
+      <h3>{{ t.included }}</h3>
+      <ul>{% for x in included %}<li>{{ x }}</li>{% endfor %}</ul>
+    </div>
+    <div>
+      <h3>{{ t.excluded }}</h3>
+      <ul>{% for x in excluded %}<li>{{ x }}</li>{% endfor %}</ul>
+    </div>
+  </div>
+</section>
+
+{% for b in blocks %}
+<section class="block keep">
+  <h3>{{ b.title }}</h3>
+  <p>{{ b.text }}</p>
+</section>
+{% endfor %}
+
+<section class="next keep">
+  <h2>{{ t.next }}</h2>
+  <p><strong>{{ t.start }}:</strong> {{ p.next_step.start }}</p>
+  <h3>{{ t.needs }}</h3>
+  <ol>{% for n in needs %}<li>{{ n }}</li>{% endfor %}</ol>
+  <p class="questions">{{ t.questions }}: <a href="mailto:{{ executor.contacts.email }}">{{ executor.contacts.email }}</a>{% if cases_url %} · <a href="{{ cases_url }}">{{ cases_url | replace("https://", "") }}</a>{% endif %}</p>
+</section>
+
+</main>
+</body>
+</html>

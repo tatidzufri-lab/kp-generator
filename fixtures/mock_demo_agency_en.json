@@ -1,0 +1,55 @@
+{
+  "project_title": "Guest assistant bot",
+  "goal": "Reception answers the same guest questions about check-in, transfers and breakfast many times a day, and messages sent at night wait until morning. We'll build a bot that answers guests around the clock in English, German and Russian, and passes booking and transfer requests to your team.",
+  "solution_items": [
+    "A Telegram bot that answers frequent guest questions in three languages",
+    "Transfer requests collected in the chat and logged in Google Sheets",
+    "Booking requests forwarded to reception with guest details",
+    "An admin page where staff update answers and opening hours"
+  ],
+  "stack": [
+    "Python",
+    "aiogram",
+    "OpenAI API",
+    "Google Sheets API"
+  ],
+  "relevant_cases": [
+    {
+      "case_id": "clinic-bot",
+      "why_relevant": "We built a booking bot that hands requests to front desk staff."
+    },
+    {
+      "case_id": "corporate-site",
+      "why_relevant": "We built a bilingual client-facing system for a logistics company that cut routine questions to staff."
+    }
+  ],
+  "stages": [
+    {
+      "name": "Bot and answers",
+      "content": "FAQ answers in three languages based on your hotel info, transfer requests logged in Google Sheets, alerts for reception",
+      "tier": "M",
+      "tier_reason": "Custom development with one integration."
+    },
+    {
+      "name": "Launch",
+      "content": "Testing with real guest questions together with reception, staff training, handover of source code and access",
+      "tier": "S",
+      "tier_reason": "Standard launch stage."
+    }
+  ],
+  "payment_option_id": "prepay_50",
+  "next_step": {
+    "start": "next week after the contract is signed",
+    "client_needs": [
+      "Hotel information and FAQ",
+      "Access to the transfers Google Sheet"
+    ]
+  },
+  "optional_blocks": [
+    {
+      "block_id": "mvp_first",
+      "detail": "FAQ answers in English only, with transfers added once the bot proves useful",
+      "reason": "The budget is fixed before the season, so a smaller first release lowers the risk."
+    }
+  ]
+}

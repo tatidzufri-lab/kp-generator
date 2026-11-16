@@ -1,0 +1,388 @@
+# Сгенерировано scripts/import_cases.py — руками не править, перезапустить скрипт.
+# Источник: сайт tatidzufri.com (тексты RU/EN) + справочник кейсов (когда упоминать).
+# Дата импорта: 2026-11-16
+cases:
+- id: vk-generator
+  number: 1
+  study_project: false
+  title:
+    ru: Автоматизация контент-маркетинга (VK Generator)
+    en: 'VK Generator: a Telegram bot that writes social media posts'
+  summary:
+    ru: Кастомный Telegram-бот на GPT-4o для генерации постов ВКонтакте — идеи, структура, хештеги за 2 минуты вместо 40.
+    en: A Telegram bot running on GPT-4o that drafts VK posts in the brand's voice, with hashtags and VK formatting already done.
+  results:
+    ru:
+    - 'Экономия времени: создание поста занимает 2 минуты вместо 40'
+    - 'Охваты: +30%'
+    - 'Заявки из соцсетей: +15%'
+    en:
+    - One post now takes 2 minutes instead of 40
+    - Reach up 30%
+    - 15% more leads from social media
+  stack:
+  - Python
+  - aiogram
+  - OpenAI API
+  when_to_use: SMM-автоматизация, генерация контента, контент-маркетинг, Telegram-боты для соцсетей, задачи на экономию времени у маркетолога/предпринимателя
+  url:
+    ru: https://tatidzufri.com/case/vk-generator
+    en: https://tatidzufri.com/en/case/vk-generator
+  demo_url: null
+- id: rag-assistant
+  number: 2
+  study_project: false
+  title:
+    ru: Мультимодельный AI-ассистент с контролем качества (RAG + RAGAS)
+    en: Multi-model RAG assistant with quality control (RAGAS)
+  summary:
+    ru: Продвинутая RAG-система с поддержкой ChatGPT и GigaChat, автоматической оценкой точности через RAGAS и Telegram-интерфейсом.
+    en: A Telegram assistant running on ChatGPT and GigaChat that answers from a knowledge base and scores every answer for accuracy with RAGAS.
+  results:
+    ru:
+    - 'Автоматизация: 90% вопросов обрабатывается без участия человека'
+    - 'Контроль качества: точность каждого ответа оценивается автоматически через RAGAS'
+    - 'Мультимодельность: работает на двух LLM, ChatGPT и GigaChat'
+    en:
+    - 90% of questions handled without a human
+    - Accuracy of every answer scored automatically with RAGAS
+    - 'Runs on two LLMs: ChatGPT and GigaChat'
+  stack:
+  - Python
+  - LangChain
+  - ChromaDB
+  - RAGAS
+  - OpenAI API
+  - GigaChat API
+  when_to_use: корпоративные базы знаний, FAQ-боты, внутренние ассистенты, снижение нагрузки на поддержку, задачи с требованием к точности ответов
+  url:
+    ru: https://tatidzufri.com/case/rag-assistant
+    en: https://tatidzufri.com/en/case/rag-assistant
+  demo_url: https://telegram.me/RAG_based_assist_bot
+- id: competitor-ai
+  number: 3
+  study_project: false
+  title:
+    ru: Платформа анализа конкурентов (CompetitorAI)
+    en: 'CompetitorAI: daily competitor monitoring with AI summaries'
+  summary:
+    ru: 'Платформа автоматического сбора и AI-анализа данных конкурентов: каждый день проверяет их сайты и соцсети и присылает резюме важных изменений.'
+    en: A platform that checks competitor websites and social media every day and sends a short summary when something important changes.
+  results:
+    ru:
+    - 'Осведомленность: время реакции сократилось с 30 дней до 24 часов'
+    - 'Стратегия: выявлено 3 новых тренда для рекламных кампаний'
+    - 'Ресурс: освобождено 40 часов рабочего времени маркетолога в месяц'
+    en:
+    - 'Reaction time: from 30 days to 24 hours'
+    - 3 new trends found for ad campaigns
+    - 40 hours of marketer time freed up every month
+  stack:
+  - Python
+  - BeautifulSoup
+  - GPT-4 Vision
+  - Pandas
+  when_to_use: мониторинг конкурентов, аналитика рынка, автоматизация маркетинга, задачи на сбор и анализ данных, автоматизация Google Ads-стратегии
+  url:
+    ru: https://tatidzufri.com/case/competitor-ai
+    en: https://tatidzufri.com/en/case/competitor-ai
+  demo_url: https://competitor.tatidzufri.com
+- id: web-scraper
+  number: 4
+  study_project: false
+  title:
+    ru: Универсальный веб-парсер (Universal Web Scraper)
+    en: 'Universal Web Scraper: custom data collection from websites'
+  summary:
+    ru: Гибкий и масштабируемый парсер, который настраивается под конкретные источники и автоматически извлекает с сайтов структурированные данные.
+    en: A scraper tuned to the client's sources. It collects prices, product availability, contacts and news and loads them into their systems.
+  results:
+    ru:
+    - 'Затраты на сбор данных: –90%'
+    - 'Актуальность: получение информации в реальном времени или по расписанию'
+    - 'Качество данных: устранение человеческого фактора и ошибок ручного ввода'
+    en:
+    - 90% lower data collection costs
+    - Fresh data in real time or on a schedule
+    - Human error from manual data entry is gone
+  stack:
+  - Python
+  - Scrapy
+  - Selenium
+  - Beautiful Soup
+  when_to_use: e-commerce, агрегаторы цен, мониторинг наличия товаров, сбор контактов, любые задачи на регулярное извлечение данных с сайтов
+  url:
+    ru: https://tatidzufri.com/case/web-scraper
+    en: https://tatidzufri.com/en/case/web-scraper
+  demo_url: null
+- id: business-reports
+  number: 5
+  study_project: true
+  title:
+    ru: 'Analytics Assistant: автоматические отчеты и AI-чат по данным'
+    en: 'Analytics Assistant: auto-generated reports and an AI chat over your data'
+  summary:
+    ru: 'Веб-платформа Analytics Assistant: автоматическая обработка файлов, интерактивные графики, отчеты в Word/PDF/PowerPoint и встроенный AI-чат по данным на естественном языке.'
+    en: A web platform that takes Excel and CSV files and turns them into interactive charts and reports in Word, PDF or PowerPoint. Questions go to a built-in AI chat.
+  results:
+    ru:
+    - 'Отчеты генерируются автоматически в нужном формате: Word, PDF или PowerPoint'
+    - Данные доступны через чат, аналитик не нужен
+    - Интерактивная визуализация без настройки вручную
+    en:
+    - Reports in Word, PDF or PowerPoint are generated automatically
+    - Answers from the data through the chat, no analyst needed
+    - Interactive charts with no manual configuration
+  stack:
+  - Python
+  - FastAPI
+  - HTMX
+  - Pandas
+  - Matplotlib
+  - OpenAI API
+  when_to_use: аналитика, BI-инструменты, автоотчеты, дашборды, работа с Excel/CSV, визуализация данных, задачи для менеджеров и аналитиков
+  url:
+    ru: https://tatidzufri.com/case/business-reports
+    en: https://tatidzufri.com/en/case/business-reports
+  demo_url: https://analytics.tatidzufri.com
+- id: llm-fine-tuning
+  number: 6
+  study_project: true
+  title:
+    ru: Дообучение локальной LLM для уникального Tone of Voice
+    en: Fine-tuning a local LLM to write in a brand's voice
+  summary:
+    ru: 'Дообучение открытой языковой модели методом LoRA для генерации текстов в уникальном стиле бренда: работает локально, на обычном железе, данные не уходят в облако.'
+    en: I fine-tuned the open Vikhr-Llama model with LoRA so it writes in a given brand's tone of voice. It runs locally on ordinary hardware, and the data never goes to the cloud.
+  results:
+    ru:
+    - 'Ускорение контента: тексты создаются в 3–5 раз быстрее'
+    - Tone of Voice бренда встроен на уровне модели
+    - 'Полная приватность: модель работает локально, данные не уходят в облако'
+    en:
+    - Content comes out 3–5x faster
+    - A brand's tone of voice is built into the model itself
+    - 'Full privacy: the model runs locally, data stays off the cloud'
+  stack:
+  - Python
+  - PyTorch
+  - Transformers
+  - PEFT (LoRA)
+  - Vikhr-Llama-3.2-1B-Instruct
+  when_to_use: деплой нейросети с Hugging Face, fine-tuning, кастомная LLM, Tone of Voice, локальный деплой, конфиденциальность данных
+  url:
+    ru: https://tatidzufri.com/case/llm-fine-tuning
+    en: https://tatidzufri.com/en/case/llm-fine-tuning
+  demo_url: null
+- id: ai-support-assistant
+  number: 7
+  study_project: false
+  title:
+    ru: AI-ассистент с ролевой маршрутизацией для клиентов и команды ретрит-центра
+    en: One AI assistant for a retreat center's clients and its team
+  summary:
+    ru: 'Многоагентный чат-виджет на OpenAI Agent Builder с системой ролей: клиенты получают ответы на вопросы, а команда — шаблоны и скрипты по кодовому слову.'
+    en: A multi-agent chat widget built on OpenAI Agent Builder. Clients ask questions about the retreat; staff type a code word and get templates and scripts.
+  results:
+    ru:
+    - 'Единая точка входа: один ассистент обслуживает и клиентов, и команду'
+    - 'Повышенная безопасность: строгая изоляция служебной информации и защита от prompt-инъекций'
+    - Ответы на вопросы клиентов 24/7
+    - 'Оптимизация работы команды: мгновенный доступ к необходимым шаблонам и скриптам'
+    en:
+    - 'One assistant serves two audiences: clients and the team'
+    - Internal information is strictly isolated from clients
+    - Answers around the clock, with protection against prompt injections
+    - The team gets templates and scripts instantly
+  stack:
+  - OpenAI Agent Builder
+  - OpenAI API
+  - FastAPI
+  - Custom HTML/JS/CSS
+  when_to_use: чат-виджет на сайт, FAQ-бот, мультиагентные системы, разграничение ролей, безопасность, ретрит / wellness / сервисный бизнес, задачи с разными аудиториями у одного бота
+  url:
+    ru: https://tatidzufri.com/case/ai-support-assistant
+    en: https://tatidzufri.com/en/case/ai-support-assistant
+  demo_url: https://retreat.tatidzufri.com
+- id: lead-qualifier
+  number: 8
+  study_project: false
+  title:
+    ru: 'AI-квалификатор лидов: как превратить диалог в готовую заявку'
+    en: 'AI lead qualifier: from a chat to a ready lead card'
+  summary:
+    ru: AI-ассистент «Лея» в Telegram на базе GPT-5.2-mini ведет эмпатичный диалог, выясняет боли клиента и автоматически формирует структурированную заявку для отдела продаж.
+    en: Leya, an AI assistant in Telegram, finds out what a new lead needs in a warm, human chat. Sales gets a structured lead card.
+  results:
+    ru:
+    - 100% автоматизация первичной квалификации лидов
+    - Рост лояльности клиентов за счет мгновенной и теплой реакции бота
+    - Менеджеры получают готовые карточки лидов со всей предысторией
+    en:
+    - First-round lead qualification is 100% automated
+    - Leads get an instant, warm reply, which builds loyalty
+    - Managers receive ready lead cards with the full backstory
+  stack:
+  - Python
+  - aiogram 3
+  - OpenAI API
+  - Pydantic
+  - Docker
+  when_to_use: квалификация лидов, CRM-интеграция, снижение нагрузки на менеджеров продаж, первичная обработка заявок, онбординг клиентов, воронка продаж
+  url:
+    ru: https://tatidzufri.com/case/lead-qualifier
+    en: https://tatidzufri.com/en/case/lead-qualifier
+  demo_url: https://t.me/retreat_poznai_bot
+- id: path-to-self
+  number: 9
+  study_project: false
+  title:
+    ru: 'AI-проводник «Путь к себе»: Telegram-бот для эмоционально сложных продуктов'
+    en: 'Path to Self: an AI guide bot for emotionally complex products'
+  summary:
+    ru: Эмпатичный Telegram-бот, который ведет глубокий рефлексивный диалог, выявляет истинные потребности клиента и формирует персонализированное предложение для отдела продаж.
+    en: A Telegram bot that talks a client through what they actually need, then puts together a personal offer for the sales team.
+  results:
+    ru:
+    - Увеличение конверсии из первого контакта
+    - Повышение лояльности клиентов благодаря индивидуальному подходу
+    - Освобождение времени команды от рутинной квалификации
+    - Клиент приходит к менеджеру уже готовым к решению
+    en:
+    - Higher conversion from first contact
+    - Clients stay more loyal because the approach is personal
+    - Frees up team time spent on routine qualification
+    - Clients come to the manager ready to decide
+  stack:
+  - Python
+  - aiogram
+  - OpenAI API
+  - PostgreSQL
+  when_to_use: wellness, коучинг, психология, ретрит, мягкие ниши, персонализированные боты, выявление потребностей, сложные эмоциональные продукты
+  url:
+    ru: https://tatidzufri.com/case/path-to-self
+    en: https://tatidzufri.com/en/case/path-to-self
+  demo_url: https://t.me/put_poznay_bot
+- id: ai-reviews-manager
+  number: 10
+  study_project: false
+  title:
+    ru: 'AI-управление отзывами на сайте: репутация под контролем 24/7 и уведомления в Telegram'
+    en: AI review assistant for a website, with alerts in Telegram
+  summary:
+    ru: AI-ассистент, который анализирует тональность отзывов на сайте, генерирует персонализированные ответы и присылает уведомления в Telegram.
+    en: Reviews on the website get a tailored reply in the brand's style, and the team sees each new one in Telegram.
+  results:
+    ru:
+    - Репутация под контролем 24/7
+    - Персонализированные ответы на отзывы без участия менеджера
+    - 'Сокращение рутины: команда фокусируется на стратегии'
+    - Ценные инсайты из отзывов без ручной обработки
+    en:
+    - Reputation under control 24/7
+    - Personal replies to reviews without a manager
+    - 'Less routine: the team works on strategy'
+    - Useful insights from reviews, no manual sorting
+  stack:
+  - Python
+  - FastAPI
+  - SQLite
+  - OpenAI API
+  - Telegram Bot API
+  when_to_use: управление репутацией, отзывы (Яндекс, Google, 2GIS, маркетплейсы, сайт), клиентский сервис, гостиницы, рестораны, ретрит, ритейл
+  url:
+    ru: https://tatidzufri.com/case/ai-reviews-manager
+    en: https://tatidzufri.com/en/case/ai-reviews-manager
+  demo_url: https://retreat.tatidzufri.com/#reviews
+- id: dialog-auditor
+  number: 11
+  study_project: false
+  title:
+    ru: 'AI-аудитор диалогов: контроль качества продаж и Tone of Voice'
+    en: 'AI call auditor: sales stages and tone of voice checked by a bot'
+  summary:
+    ru: Telegram-бот, который автоматически транскрибирует звонки менеджеров и проверяет соблюдение этапов продаж и Tone of Voice через AI-анализ. Вы получаете отчет с рекомендациями.
+    en: A Telegram bot transcribes managers' calls and checks whether they followed your sales stages and tone of voice. You get a report with recommendations.
+  results:
+    ru:
+    - Контроль качества звонков без ручного прослушивания
+    - Объективная обратная связь менеджерам с конкретными рекомендациями
+    - Единообразие в общении с клиентами
+    - Данные для управления продажами и стратегического планирования
+    en:
+    - Call quality control without listening to recordings by hand
+    - Managers get objective feedback with specific recommendations
+    - The whole team talks to clients in a consistent way
+    - Data for managing sales and for strategic planning
+  stack:
+  - Python
+  - AssemblyAI
+  - OpenAI API
+  - PostgreSQL
+  when_to_use: речевая аналитика, контроль качества звонков, обучение менеджеров, колл-центры, Tone of Voice, аудит коммуникаций, отделы продаж
+  url:
+    ru: https://tatidzufri.com/case/dialog-auditor
+    en: https://tatidzufri.com/en/case/dialog-auditor
+  demo_url: https://t.me/curator_audit_bot
+- id: content-generator
+  number: 12
+  study_project: false
+  title:
+    ru: 'Генератор контента в голосе бренда: пять форматов, пять настроений и две нейросети'
+    en: 'Brand-voice content generator: five formats, five moods, two models'
+  summary:
+    ru: 'Веб-приложение для создания контента в фирменной тональности: пост, сторис, подпись, идеи и письмо для рассылки — с выбором настроения и переключением между GPT-4o и DeepSeek.'
+    en: A web app that writes posts, stories, captions, idea lists and newsletters in one brand voice. Pick a mood and a format, switch between GPT-4o and DeepSeek R1.
+  results:
+    ru:
+    - 'Скорость: готовый текст за минуту вместо получаса на черновик'
+    - 'Единый голос бренда: тональность и словарь заданы в самом приложении, а не держатся в голове автора'
+    - 'Покрытие задач: 25 комбинаций, пять настроений на пять форматов контента'
+    - 'Экономия: черновики генерируются бесплатной моделью, платная остается для чистовых текстов'
+    en:
+    - 'Speed: a finished text in a minute instead of half an hour on a draft'
+    - 'One brand voice: tone and vocabulary are set in the app itself, so they don''t depend on who''s writing'
+    - '25 combinations: five moods across five content formats'
+    - 'Lower costs: drafts run on a free model, the paid one is kept for final copy'
+  stack:
+  - Python
+  - Streamlit
+  - OpenAI API (GPT-4o)
+  - OpenRouter (DeepSeek R1)
+  - Docker
+  when_to_use: SMM-автоматизация, генерация контента, копирайтинг под Tone of Voice, задачи на экономию времени у маркетолога/копирайтера, выбор между несколькими LLM в одном инструменте
+  url:
+    ru: https://tatidzufri.com/case/content-generator
+    en: https://tatidzufri.com/en/case/content-generator
+  demo_url: https://content.tatidzufri.com
+- id: banner-funnel
+  number: 13
+  study_project: false
+  title:
+    ru: 'Персонализированные баннеры для Telegram-воронки: три этапа прогрева без дизайнера'
+    en: 'Personalized banners for a Telegram funnel: three warm-up stages, no designer'
+  summary:
+    ru: Инструмент, который собирает для каждого подписчика именной баннер с его должностью и компанией, превращает его в изображение и рассылает по этапам прогрева.
+    en: A tool that makes a banner for every subscriber with their job title and company, renders it as an image and sends it out at each stage of the funnel.
+  results:
+    ru:
+    - 'Персонализация: каждый подписчик получает баннер со своей должностью и компанией'
+    - 'Скорость: серия из 15 макетов собирается за полторы минуты и без участия дизайнера'
+    - 'Гибкость: шесть готовых профилей бренда — от сдержанного минимализма до премиального стиля'
+    - 'Единая верстка: девять шаблонов закрывают три этапа воронки по три варианта на каждый'
+    en:
+    - Every subscriber gets a banner with their own job title and company
+    - A series of 15 banners is ready in 90 seconds without a designer
+    - Six ready brand profiles, from restrained minimalism to a premium look
+    - Nine templates cover the three funnel stages, three variants each
+  stack:
+  - Python
+  - aiogram
+  - Jinja2
+  - html2image (Chromium)
+  - Docker
+  when_to_use: персонализация Telegram-рассылок, прогрев подписчиков, воронки продаж, автоматизация дизайна и генерации изображений без дизайнера, брендинг под несколько профилей
+  url:
+    ru: https://tatidzufri.com/case/banner-funnel
+    en: https://tatidzufri.com/en/case/banner-funnel
+  demo_url: null

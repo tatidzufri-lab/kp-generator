@@ -1,0 +1,29 @@
+{
+  "project_title": "AI guest assistant",
+  "goal": "Your receptionists answer the same questions about check-in, transfers, breakfast and the beach many times a day. At night guests wait until morning for a reply. The assistant will answer in English, German and Russian from your hotel info at any hour and pass booking requests to reception.",
+  "solution_items": [
+    "A Telegram assistant that answers guest questions from your 12-page hotel PDF",
+    "Replies in English, German or Russian, whichever the guest writes in",
+    "Transfer requests collected in the chat and added to your Google Sheet",
+    "Booking questions handed to reception with the full conversation",
+    "Staff can update the hotel info themselves, no developer needed"
+  ],
+  "stack": ["Python", "aiogram", "OpenAI API", "RAG", "Google Sheets API"],
+  "relevant_cases": [
+    {"case_id": "rag-assistant", "why_relevant": "It also answers from a knowledge base and scores each answer for accuracy."},
+    {"case_id": "ai-support-assistant", "why_relevant": "One assistant serves both guests and staff of a hospitality business."}
+  ],
+  "stages": [
+    {"name": "MVP: answers from hotel info", "content": "RAG over the hotel PDF with answers in three languages in Telegram", "tier": "M", "tier_reason": "An LLM over your own data, no external integration yet."},
+    {"name": "Transfers and reception handoff", "content": "Transfer requests go to Google Sheets, booking questions go to staff", "tier": "S", "tier_reason": "One simple integration on top of a working bot."},
+    {"name": "Testing and handover", "content": "Testing on real guest questions, a short guide for reception, access handover", "tier": "S", "tier_reason": "Standard final stage."}
+  ],
+  "payment_option_id": "prepay_50",
+  "next_step": {
+    "start": "within 2 business days after we agree on terms",
+    "client_needs": ["The hotel information PDF", "Access to the transfers Google Sheet", "A Telegram account for the hotel bot"]
+  },
+  "optional_blocks": [
+    {"block_id": "guarantees", "detail": "", "reason": "The season deadline is fixed, so progress needs to be visible at every stage."}
+  ]
+}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}История КП{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>История</h1>
+  <p class="sub">Все сгенерированные КП, новые сверху. Файлы лежат в папке <code>output/</code>.</p>
+</div>
+
+{% if records %}
+<div class="card table-card">
+  <table class="history">
+    <thead>
+      <tr><th>Дата</th><th>Клиент и проект</th><th>Исполнитель</th><th>Язык</th><th class="num">Сумма</th><th>Режим</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for r in records %}
+      {% set m = r.meta %}
+      <tr>
+        <td class="nowrap">{{ m.created_at | dt }}</td>
+        <td><a href="{{ url_for('preview', record_id=r.id) }}"><strong>{{ m.company }}</strong></a><div class="muted small">{{ m.project_title }}</div></td>
+        <td>{{ m.profile_name }}{% if m.demo_profile %} <span class="pill">демо</span>{% endif %}</td>
+        <td>{{ m.language | upper }}</td>
+        <td class="num nowrap">{{ money(m.total_price, m.currency) }}<div class="muted small">{{ m.total_days }} раб. дн.</div></td>
+        <td>{% if m.mode == 'mock' %}<span class="pill">заготовка</span>{% else %}{{ m.model }}{% endif %}{% if m.warnings %} <span class="pill pill-warn" title="{{ m.warnings | join('; ') }}">{{ m.warnings | length }} замеч.</span>{% endif %}</td>
+        <td class="nowrap"><a href="{{ url_for('pdf', record_id=r.id) }}">PDF</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="card empty">
+  <p>Пока ни одного КП.</p>
+  <a class="btn btn-primary" href="{{ url_for('index') }}">Создать первое</a>
+</div>
+{% endif %}
+{% endblock %}

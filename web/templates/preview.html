@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ m.project_title }} — {{ m.company }}{% endblock %}
+{% block content %}
+<div class="page-head preview-head">
+  <div>
+    <a class="back" href="{{ url_for('history') }}">← История</a>
+    <h1>{{ m.project_title }}</h1>
+    <p class="sub">{{ m.company }} · {{ m.profile_name }}{{ ' (демо)' if m.demo_profile }} · {{ m.language | upper }} · {{ m.created_at | dt }}</p>
+  </div>
+  <div class="actions">
+    <a class="btn btn-primary" href="{{ url_for('pdf', record_id=r.id) }}">Скачать PDF</a>
+    <form method="post" action="{{ url_for('regenerate', record_id=r.id) }}" class="inline" onsubmit="this.querySelector('button').disabled=true; this.querySelector('button').textContent='Генерирую…'">
+      <button class="btn btn-ghost" type="submit">Сгенерировать заново</button>
+    </form>
+  </div>
+</div>
+
+{% if m.warnings %}
+<div class="alert alert-warn">
+  <strong>Проверка по Tone of Voice: поправьте перед отправкой</strong>
+  <ul>{% for w in m.warnings %}<li>{{ w }}</li>{% endfor %}</ul>
+</div>
+{% endif %}
+
+<div class="preview-grid">
+  <iframe class="doc-frame" src="{{ url_for('document', record_id=r.id) }}" title="КП" id="doc"></iframe>
+
+  <aside class="card side">
+    <h2>Расчет</h2>
+    <p class="muted small">Видно только вам, в PDF не попадает.</p>
+    <table class="calc">
+      <thead><tr><th>Этап</th><th>Ур.</th><th class="num">Часы</th><th class="num">Цена</th></tr></thead>
+      <tbody>
+      {% for row in rows %}
+        <tr>
+          <td>{{ row.stage.name }}<div class="muted small">{{ row.stage.tier_reason }}</div></td>
+          <td><span class="tier tier-{{ row.stage.tier }}">{{ row.stage.tier }}</span></td>
+          <td class="num">{{ row.cost.hours | round(1) }}</td>
+          <td class="num">{{ money(row.cost.price, pricing.currency) }}<div class="muted small">{{ row.days }}</div></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr><td colspan="2">Итого</td><td class="num">{{ pricing.total_hours | round(1) }}</td><td class="num">{{ money(pricing.total_price, pricing.currency) }}</td></tr>
+      </tfoot>
+    </table>
+    <dl class="facts">
+      <div><dt>Ставка</dt><dd>{{ pricing.rate | round(0) | int }} {{ '₽' if pricing.currency == 'RUB' else '$' }}/ч</dd></div>
+      <div><dt>Токены агента</dt><dd>${{ '%g' % pricing.total_tokens_usd }}</dd></div>
+      <div><dt>Срок</dt><dd>{{ pricing.total_days }} раб. дн.</dd></div>
+      <div><dt>Генерация</dt><dd>{{ 'заготовка' if m.mode == 'mock' else m.model }}, попыток: {{ m.attempts }}</dd></div>
+      {% if m.mode == 'live' %}
+      <div><dt>Токены запроса</dt><dd>вход {{ m.usage.input_tokens }} (кэш {{ m.usage.cached_tokens }}), выход {{ m.usage.output_tokens }}</dd></div>
+      {% endif %}
+    </dl>
+  </aside>
+</div>
+
+<script>
+const frame = document.getElementById("doc");
+frame.addEventListener("load", () => {
+  const fit = () => { frame.style.height = frame.contentDocument.documentElement.scrollHeight + "px"; };
+  fit();
+  frame.contentWindow.addEventListener("resize", fit);
+});
+</script>
+{% endblock %}

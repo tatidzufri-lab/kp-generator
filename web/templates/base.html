@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Генератор КП{% endblock %}</title>
+<style>
+@font-face { font-family: "Inter"; font-weight: 400; src: url("{{ url_for('fonts', filename='inter/Inter-Regular.ttf') }}"); }
+@font-face { font-family: "Inter"; font-weight: 500; src: url("{{ url_for('fonts', filename='inter/Inter-Medium.ttf') }}"); }
+@font-face { font-family: "Inter"; font-weight: 600; src: url("{{ url_for('fonts', filename='inter/Inter-SemiBold.ttf') }}"); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url("{{ url_for('fonts', filename='inter/Inter-Bold.ttf') }}"); }
+@font-face { font-family: "Space Grotesk"; font-weight: 700; src: url("{{ url_for('fonts', filename='space-grotesk/SpaceGrotesk-Bold.ttf') }}"); }
+</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=1">
+</head>
+<body>
+<header class="bar">
+  <div class="bar-inner">
+    <a class="brand" href="{{ url_for('index') }}">КП<span>·</span>генератор</a>
+    <nav>
+      <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' }}">Новое КП</a>
+      <a href="{{ url_for('history') }}" class="{{ 'active' if request.endpoint == 'history' }}">История</a>
+    </nav>
+    <span class="mode {{ 'mode-mock' if mock_mode else 'mode-live' }}" title="{{ 'Нет ключа OpenAI или KP_MOCK=1' if mock_mode else 'Запросы идут в OpenAI' }}">
+      {{ 'Без API: заготовки' if mock_mode else 'OpenAI · ' ~ model_name }}
+    </span>
+  </div>
+</header>
+<main class="wrap">
+  {% with msgs = get_flashed_messages() %}
+  {% for m in msgs %}<div class="alert">{{ m }}</div>{% endfor %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

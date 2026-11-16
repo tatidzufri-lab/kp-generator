@@ -1,0 +1,236 @@
+# Профиль исполнителя: Татьяна Дзюбас.
+# Тон, правила текста и палитра — по Tone of Voice от 14.11.2026.
+# Структура КП и опциональные блоки — по шаблону КП, переписаны под ToV.
+# Кейсы — в tatiana.cases.yaml (генерируется scripts/import_cases.py).
+
+id: tatiana
+demo: false
+cases_file: tatiana.cases.yaml
+
+executor:
+  name:
+    ru: Татьяна Дзюбас
+    en: Tetiana Dziubas
+  title:
+    ru: AI-инженер по автоматизации
+    en: AI automation engineer
+  tagline:
+    ru: Делаю Telegram-ботов, RAG-ассистентов и LLM-агентов, которые снимают рутину с небольших команд
+    en: I build Telegram bots, RAG assistants and LLM agents that take routine work off small teams
+  contacts:
+    email: tatidzufri@gmail.com
+    site: https://tatidzufri.com
+    cases_url:
+      ru: https://tatidzufri.com/cases
+      en: https://tatidzufri.com/en/cases
+
+brand:
+  primary: "#1F364D"
+  accent: "#F2A541"
+  background: "#FAF8F4"
+  text: "#1A1A1A"
+  heading_font: Space Grotesk
+  body_font: Inter
+
+voice:
+  tone:
+    ru: >-
+      Инженер-практик на встрече с клиентом: собранно и по делу, от первого лица.
+      Тепло и прямо, без снисходительности. Термин для бизнеса поясняется в двух-трех словах.
+      Живой разговорный язык специалиста, без канцелярита и лишних англицизмов.
+    en: >-
+      A hands-on engineer meeting a client: focused, first person, plain English.
+      Short sentences, active voice, contractions are fine. Warm and direct.
+      Explain a technical term in two or three words when the reader is a business owner.
+  rules:
+    ru:
+      - Каждое утверждение держится на факте из брифа или из профиля. Цифр, которых нет в брифе или в кейсах, не писать.
+      - «Цель» пересказывает слова заказчика, а не оценку исполнителя.
+      - «Решение» — конкретные модули и функции по задаче клиента, без общих слов про автоматизацию.
+      - Абзац — одно-три предложения. Предложения разной длины.
+      - Без хайпа и обещаний без факта. Не писать «я профессионал», «гарантирую качество», «большой опыт».
+      - Не строить фразы по шаблону «не X, а Y», «из X в Y», «дело не в X, а в Y».
+      - Без перечислений тройками ради ритма и без одинаково построенных пунктов списка.
+      - Без итоговой фразы в конце и без дежурного вопроса к читателю.
+    en:
+      - Every claim rests on a fact from the brief or the profile. No numbers that aren't in the brief or the cases.
+      - The goal section restates the client's own words, not the engineer's opinion.
+      - The solution lists concrete modules and features for this client, not generic talk about automation.
+      - One to three sentences per paragraph. Vary sentence length.
+      - No hype and no promises without a fact behind them. Never write "I'm a professional", "I guarantee quality", "extensive experience".
+      - Don't build sentences on "not X, but Y" or "from X to Y" patterns.
+      - No lists of three for rhythm, no list items built the same way.
+      - No summary line at the end and no generic question to the reader.
+      - Communication is written-first and async. Calls only on request. Never promise regular calls in English.
+  stop_phrases:
+    ru:
+      - революция
+      - революционн
+      - game-changer
+      - ИИ заменит
+      - это не просто тренд
+      - очень мощный инструмент
+      - опережают конкурентов
+      - только сегодня
+      - бесплатная консультация
+      - давайте разберемся
+      - важно отметить
+      - ключевой
+      - в мире, где
+      - реально работает
+      - игра меняется
+      - я профессионал
+      - гарантирую качество
+      - большой опыт
+      - осуществляется
+      - данный
+      - AI-специалист
+      - эксперт по нейросетям
+    en:
+      - revolution
+      - game-changer
+      - game changer
+      - cutting-edge
+      - unlock
+      - leverage
+      - seamless
+      - in today's world
+      - it's important to note
+      - let's dive in
+      - dear colleagues
+      - free consultation
+      - I'm a professional
+      - I guarantee quality
+      - extensive experience
+      - AI expert
+  forbid_yo: true
+  forbid_emoji: true
+  max_long_dashes: 2
+  word_limit: [250, 400]
+
+services:
+  ru:
+    - Telegram-боты с LLM
+    - RAG-ассистенты по базе знаний
+    - LLM-агенты и многоагентные системы
+    - парсинг и мониторинг сайтов
+    - генерация документов и отчетов (PDF, Word, PowerPoint)
+    - автоматизация работы с отзывами и контентом
+  en:
+    - Telegram bots with LLMs
+    - RAG assistants over a knowledge base
+    - LLM agents and multi-agent setups
+    - web scraping and site monitoring
+    - document and report generation (PDF, Word, PowerPoint)
+    - automation for reviews and content
+
+# Технологии, с которыми исполнитель уже работает помимо стека кейсов.
+# Нужны, чтобы блок «Что для меня новое» не появлялся без причины.
+skills:
+  - OpenAI API
+  - DeepSeek API
+  - GigaChat API
+  - Yandex Cloud API
+  - Cloud.ru API
+  - Telegram Bot API
+  - aiogram
+  - FastAPI
+  - Flask
+  - Streamlit
+  - Jinja2
+  - Docker
+  - PostgreSQL
+  - SQLite
+  - Google Sheets API
+  - REST API
+  - webhooks
+  - n8n
+  - Qdrant
+  - LangChain
+  - ChromaDB
+  - Selenium
+  - Scrapy
+  - WeasyPrint
+  - python-docx
+
+# Уровни сложности этапа. Часы и токены для каждого уровня — в .env (см. README, «Как считается стоимость»).
+tiers:
+  S:
+    ru: Простой модуль на готовых библиотеках, один источник данных, одна роль пользователя. Например, бот с меню и ответами LLM, скрипт выгрузки, парсер одного сайта.
+    en: A simple module on standard libraries, one data source, one user role. For example a menu bot with LLM replies, an export script, a scraper for one site.
+  M:
+    ru: Модуль с LLM и собственными данными или одной внешней интеграцией. Например, RAG по базе знаний, генератор документов по шаблону, бот с записью в CRM или таблицу.
+    en: A module with an LLM plus your own data or one external integration. For example RAG over a knowledge base, a document generator, a bot that writes to a CRM or spreadsheet.
+  L:
+    ru: Несколько связанных сервисов, веб-интерфейс, несколько интеграций или ролей, деплой с базой данных. Например, платформа мониторинга, многоагентный ассистент с админкой.
+    en: Several connected services, a web interface, multiple integrations or roles, deployment with a database. For example a monitoring platform or a multi-agent assistant with an admin panel.
+
+terms:
+  included:
+    ru:
+      - Разработка и деплой
+      - Исходный код переходит в вашу собственность
+      - Инструкция по работе с системой
+      - 14 дней поддержки после сдачи
+    en:
+      - Development and deployment
+      - You own the source code
+      - A guide to using the system
+      - 14 days of support after handover
+  excluded:
+    ru:
+      - Сервер или хостинг оплачиваются отдельно
+      - API-ключи (OpenAI, Telegram и другие) оформляются на ваш аккаунт, расход токенов в работе системы идет с него
+    en:
+      - Server or hosting is paid separately
+      - API keys (OpenAI, Telegram and others) are set up on your account, and the system's token usage is billed there
+  payment_options:
+    - id: prepay_50
+      text:
+        ru: 50% предоплата, 50% после сдачи
+        en: 50% upfront, 50% on delivery
+      hint: По умолчанию.
+    - id: by_stage
+      text:
+        ru: Оплата по этапам, после сдачи каждого
+        en: Pay per stage, after each one is delivered
+      hint: Если клиент против предоплаты или проект из трех-четырех этапов. Не спорить с отказом от предоплаты.
+  next_step_fixed:
+    ru:
+      - Согласовать условия или подписать договор
+    en:
+      - Agree on terms or sign a contract
+
+optional_blocks:
+  - id: guarantees
+    title:
+      ru: Как я работаю
+      en: How I work
+    text:
+      ru: Работаю итерациями и показываю результат после каждого этапа. Исходный код передаю вам, так что вы не привязаны ко мне как к единственному исполнителю.
+      en: I work in iterations and show you a result after every stage. You get the source code, so you're never locked in to me.
+    when: Клиент осторожный, проект крупный, или в брифе есть опасения насчет подрядчиков.
+  - id: direct
+    title:
+      ru: Работа напрямую
+      en: Working with me directly
+    text:
+      ru: Вы общаетесь с тем, кто пишет код, без менеджеров между нами. За каждый этап отвечаю я сама и на субподряд задачу не передаю.
+      en: You talk to the person who writes the code, with no account managers in between. I'm responsible for every stage and I don't subcontract.
+    when: Клиент сравнивает с агентствами или крупными подрядчиками.
+  - id: limitations
+    title:
+      ru: Что для меня новое
+      en: What's new for me
+    text:
+      ru: С {detail} я буду работать впервые. Архитектуру понимаю, время на изучение особенностей уже заложено в план, на срок это не повлияет.
+      en: This will be my first project with {detail}. I understand the architecture, and time to learn its specifics is already in the plan, so the deadline doesn't change.
+    when: В задаче есть технология другого класса, которой нет ни в стеке кейсов, ни в skills (например, мобильное приложение, 1С, голосовая телефония). Еще один сервис с REST API сюда не относится. В detail — название технологии.
+  - id: mvp_first
+    title:
+      ru: Начать с MVP
+      en: Start with an MVP
+    text:
+      ru: "Предлагаю начать с MVP: {detail}. Вы проверите систему на своих данных до того, как вкладываться в полную версию."
+      en: "I suggest we start with an MVP: {detail}. You'll test the system on your own data before paying for the full version."
+    when: Клиент хочет снизить риск, бюджет меньше оценки, или задача размыта. В detail — что входит в минимальную версию.

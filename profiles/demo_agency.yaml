@@ -1,0 +1,160 @@
+# ДЕМО-ПРОФИЛЬ. «Лампа Digital» — вымышленное агентство, кейсы и цифры
+# придуманы для демонстрации генератора. В КП по этому профилю
+# автоматически ставится пометка «Демо-профиль».
+
+id: demo_agency
+demo: true
+
+executor:
+  name:
+    ru: Лампа Digital
+    en: Lampa Digital
+  title:
+    ru: Студия веб-разработки и автоматизации продаж
+    en: Web development and sales automation studio
+  tagline:
+    ru: Сайты, интернет-магазины и интеграции, которые доводят заявку до продажи
+    en: Websites, online stores and integrations that turn a lead into a sale
+  contacts:
+    email: hello@lampa-digital.example
+    site: https://lampa-digital.example
+
+brand:
+  primary: "#2E3A59"
+  accent: "#3FB984"
+  background: "#FFFFFF"
+  text: "#222222"
+  heading_font: Space Grotesk
+  body_font: Inter
+
+voice:
+  tone:
+    ru: Деловой и дружелюбный тон команды, от лица «мы». Конкретно, без жаргона, с цифрами там, где они есть.
+    en: A friendly, businesslike team voice using "we". Concrete, no jargon, numbers where we have them.
+  rules:
+    ru:
+      - Опираться только на факты из брифа и кейсов профиля, цифры не придумывать.
+      - Решение описывать модулями, понятными владельцу бизнеса.
+      - Абзацы короткие, без канцелярита.
+    en:
+      - Use only facts from the brief and the profile's cases. Never invent numbers.
+      - Describe the solution as modules a business owner understands.
+      - Keep paragraphs short, no corporate filler.
+  stop_phrases:
+    ru: [революция, уникальное предложение, лучшие на рынке, гарантируем результат]
+    en: [revolution, best in the market, we guarantee results, cutting-edge]
+  forbid_yo: false
+  forbid_emoji: true
+  max_long_dashes: 3
+  word_limit: [250, 450]
+
+services:
+  ru:
+    - лендинги и корпоративные сайты
+    - интернет-магазины
+    - интеграции с CRM (amoCRM, Bitrix24)
+    - чат-боты для приема заявок
+    - сквозная аналитика
+  en:
+    - landing pages and company websites
+    - online stores
+    - CRM integrations (amoCRM, Bitrix24)
+    - lead capture chatbots
+    - end-to-end analytics
+
+skills: [WordPress, Tilda, Next.js, Node.js, PostgreSQL, amoCRM API, Bitrix24 API, YCLIENTS API, Google Sheets API, Python, aiogram]
+
+tiers:
+  S:
+    ru: Типовая задача на готовом решении. Например, лендинг на шаблоне, простая форма заявки, бот с меню.
+    en: A standard task on an existing solution. For example a template landing page, a simple lead form, a menu bot.
+  M:
+    ru: Индивидуальная разработка или одна интеграция. Например, сайт по макету, связка сайта с CRM, бот с записью заявок.
+    en: Custom development or one integration. For example a website from a design, a site-to-CRM link, a bot that logs leads.
+  L:
+    ru: Комплексный проект из нескольких систем. Например, интернет-магазин с оплатой, складом и CRM.
+    en: A project spanning several systems. For example an online store with payments, inventory and CRM.
+
+terms:
+  included:
+    ru: [Дизайн и разработка, Настройка хостинга и домена, Обучение команды клиента, 30 дней гарантийной поддержки]
+    en: [Design and development, Hosting and domain setup, Training for your team, 30 days of warranty support]
+  excluded:
+    ru: [Оплата хостинга и домена, Платные лицензии CRM и сервисов]
+    en: [Hosting and domain fees, Paid CRM and service licenses]
+  payment_options:
+    - id: prepay_50
+      text: {ru: "50% предоплата, 50% после сдачи", en: "50% upfront, 50% on delivery"}
+      hint: По умолчанию.
+    - id: by_stage
+      text: {ru: Оплата по этапам, en: Pay per stage}
+      hint: Проекты уровня L или по просьбе клиента.
+  next_step_fixed:
+    ru: [Подписать договор]
+    en: [Sign the contract]
+
+optional_blocks:
+  - id: guarantees
+    title: {ru: Гарантии, en: Warranty}
+    text:
+      ru: В течение 30 дней после сдачи исправляем ошибки бесплатно. Исходники и доступы передаем вам.
+      en: For 30 days after delivery we fix bugs for free. You get the source code and all access.
+    when: Клиент осторожный или упоминал неудачный опыт с подрядчиками.
+  - id: mvp_first
+    title: {ru: Начать с минимальной версии, en: Start small}
+    text:
+      ru: "Предлагаем начать с минимальной версии: {detail}. Так вы быстрее выйдете к клиентам и проверите спрос."
+      en: "We suggest starting with a minimal version: {detail}. You'll reach customers sooner and test demand."
+    when: Бюджет меньше оценки или задача размыта.
+
+cases:
+  - id: flower-shop
+    title: {ru: Интернет-магазин цветочной мастерской, en: Online store for a flower studio}
+    summary:
+      ru: Магазин с каталогом букетов, оплатой картой и выгрузкой заказов в amoCRM.
+      en: A store with a bouquet catalog, card payments and orders synced to amoCRM.
+    results:
+      ru: ["Онлайн-заказы: 35% выручки за первые 3 месяца", "Время обработки заказа: с 20 до 5 минут"]
+      en: ["Online orders: 35% of revenue in the first 3 months", "Order processing time: from 20 to 5 minutes"]
+    stack: [WordPress, WooCommerce, amoCRM API]
+    when_to_use: интернет-магазины, малый ритейл, интеграции с CRM
+  - id: clinic-bot
+    title: {ru: Бот записи для стоматологии, en: Booking bot for a dental clinic}
+    summary:
+      ru: Telegram-бот принимает запись к врачам и пишет заявки в Bitrix24.
+      en: A Telegram bot books appointments and logs requests in Bitrix24.
+    results:
+      ru: ["Пропущенные заявки: с 15% до 2%", "Администратор тратит на запись вдвое меньше времени"]
+      en: ["Missed requests: from 15% to 2%", "Front desk spends half the time on bookings"]
+    stack: [Python, aiogram, Bitrix24 API]
+    when_to_use: запись клиентов, медицина, сфера услуг, чат-боты
+  - id: b2b-landing
+    title: {ru: Лендинг для производителя упаковки, en: Landing page for a packaging manufacturer}
+    summary:
+      ru: Лендинг с калькулятором тиража и квизом для оптовых заявок.
+      en: A landing page with a print-run calculator and a quiz for wholesale leads.
+    results:
+      ru: ["Конверсия в заявку: 4,1%", "Стоимость заявки снизилась на 28%"]
+      en: ["Lead conversion: 4.1%", "Cost per lead down 28%"]
+    stack: [Tilda, JavaScript, Google Analytics 4]
+    when_to_use: B2B, лендинги, лидогенерация, производство
+  - id: analytics-dashboard
+    title: {ru: Сквозная аналитика для онлайн-школы, en: End-to-end analytics for an online school}
+    summary:
+      ru: Дашборд связывает рекламные кабинеты, CRM и оплаты в одну воронку.
+      en: A dashboard links ad accounts, CRM and payments into one funnel.
+    results:
+      ru: ["Отчет по рекламе собирается сам, раньше на него уходил день в неделю", "Отключены 3 убыточных канала"]
+      en: ["The ad report builds itself, it used to take a day a week", "3 unprofitable channels switched off"]
+    stack: [Python, BigQuery, Looker Studio]
+    when_to_use: аналитика, онлайн-образование, маркетинг, отчеты
+  - id: corporate-site
+    title: {ru: Корпоративный сайт логистической компании, en: Website for a logistics company}
+    summary:
+      ru: Сайт на двух языках с расчетом стоимости доставки и личным кабинетом клиента.
+      en: A bilingual site with a delivery cost calculator and a client account.
+    results:
+      ru: ["Заявки с сайта выросли в 2,3 раза", "Звонков с вопросом «где груз» стало меньше на 40%"]
+      en: ["Website leads up 2.3x", "40% fewer \"where is my cargo\" calls"]
+    stack: [Next.js, Node.js, PostgreSQL]
+    when_to_use: корпоративные сайты, логистика, личные кабинеты, B2B
