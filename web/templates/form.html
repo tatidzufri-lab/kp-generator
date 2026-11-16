@@ -5,6 +5,12 @@
   <p class="sub">Заполните бриф после разговора с заказчиком. Структура, кейсы и стоимость соберутся из профиля исполнителя.</p>
 </div>
 
+{% if demo_mode %}
+<div class="alert">
+  Это демо. Генераций через OpenAI в этой сессии осталось: <strong>{{ demo_left }}</strong>. Без API (галочка «без API») можно сколько угодно, но текст будет заготовкой. Созданные КП видны только вам.
+</div>
+{% endif %}
+
 {% if errors.form %}
 <div class="alert alert-error">
   <strong>{{ errors.form }}</strong>

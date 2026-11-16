@@ -3,7 +3,7 @@
 {% block content %}
 <div class="page-head">
   <h1>История</h1>
-  <p class="sub">Все сгенерированные КП, новые сверху. Файлы лежат в папке <code>output/</code>.</p>
+  <p class="sub">{% if demo_mode %}КП, созданные в этой сессии, новые сверху.{% else %}Все сгенерированные КП, новые сверху. Файлы лежат в папке <code>output/</code>.{% endif %}</p>
 </div>
 
 {% if records %}

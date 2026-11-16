@@ -51,6 +51,15 @@ class Settings:
     hours_per_client_day: float = 4
     test_multiplier: float = 3
     tiers: dict[str, TierCost] = field(default_factory=dict)
+    # Публичное демо: видны только свои КП, живые генерации ограничены
+    public_demo: bool = False
+    demo_max_per_session: int = 5
+    demo_max_per_day: int = 50
+    output_dir: Path = ROOT / "output"
+
+    @property
+    def demo_usage_file(self) -> Path:
+        return self.output_dir / ".demo_usage.json"
 
     @property
     def mock(self) -> bool:
@@ -58,8 +67,16 @@ class Settings:
         return self.mock_forced or not self.openai_api_key
 
 
+def _flag(name: str) -> bool:
+    return os.getenv(name, "").strip().lower() in {"1", "true", "yes"}
+
+
 def load_settings() -> Settings:
     return Settings(
+        public_demo=_flag("KP_PUBLIC_DEMO"),
+        demo_max_per_session=int(_float("KP_DEMO_MAX_PER_SESSION", 5)),
+        demo_max_per_day=int(_float("KP_DEMO_MAX_PER_DAY", 50)),
+        output_dir=Path(os.getenv("KP_OUTPUT_DIR", "").strip() or ROOT / "output"),
         openai_api_key=os.getenv("OPENAI_API_KEY", "").strip(),
         openai_model=os.getenv("OPENAI_MODEL", "").strip(),
         mock_forced=os.getenv("KP_MOCK", "").strip() in {"1", "true", "yes"},

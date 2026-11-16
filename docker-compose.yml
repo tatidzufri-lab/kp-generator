@@ -1,0 +1,29 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        APP_UID: "${APP_UID:-1000}"
+    image: kp-generator
+    container_name: kp-generator
+    env_file: .env
+    environment:
+      - TZ=Europe/Moscow
+      - KP_OUTPUT_DIR=/app/data/output
+    # Только localhost: наружу отдает nginx (kp.tatidzufri.com)
+    ports:
+      - "127.0.0.1:${APP_PORT:-8004}:8000"
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/', timeout=5)"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+    mem_limit: 600m
+    restart: unless-stopped

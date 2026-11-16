@@ -20,17 +20,18 @@ import secrets
 from datetime import datetime
 from pathlib import Path
 
-from flask import Flask, abort, flash, redirect, render_template, request, send_file, send_from_directory, url_for
+from flask import Flask, abort, flash, redirect, render_template, request, send_file, send_from_directory, session, url_for
 from pydantic import ValidationError
 
 from kp.config import ROOT, Settings, load_settings
+from kp.demo import DailyCounter
 from kp.generator import GenerationError
 from kp.models import Brief, Proposal
 from kp.pricing import Pricing, format_money
 from kp.profiles import ProfileError, list_profiles, load_profile
 from kp.render import FONTS_DIR, days_label, render_html
 from kp.service import create_proposal
-from kp.storage import OUTPUT_DIR, Record, get_record, list_history, slugify
+from kp.storage import Record, get_record, list_history, slugify
 
 FIELDS = ("company", "contact_name", "industry", "task", "budget", "deadline", "notes")
 
@@ -53,14 +54,45 @@ def field_errors(e: ValidationError) -> dict[str, str]:
     return out
 
 
-def create_app(settings: Settings | None = None, output_root: Path = OUTPUT_DIR) -> Flask:
+def create_app(settings: Settings | None = None, output_root: Path | None = None) -> Flask:
     app = Flask(__name__, template_folder="web/templates", static_folder="web/static")
     app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET_KEY") or secrets.token_hex(16)
-    app.config["KP_SETTINGS"] = settings or load_settings()
-    app.config["KP_OUTPUT"] = output_root
+    settings = settings or load_settings()
+    if settings.public_demo and not os.getenv("FLASK_SECRET_KEY"):
+        # под gunicorn несколько процессов: без общего ключа лимиты и «свои КП» в сессии не работают
+        raise RuntimeError("KP_PUBLIC_DEMO=1 требует FLASK_SECRET_KEY в .env")
+    app.config["KP_SETTINGS"] = settings
+    app.config["KP_OUTPUT"] = output_root or settings.output_dir
+    daily = DailyCounter(app.config["KP_OUTPUT"] / ".demo_usage.json", settings.demo_max_per_day)
 
     def cfg() -> tuple[Settings, Path]:
         return app.config["KP_SETTINGS"], app.config["KP_OUTPUT"]
+
+    def demo() -> bool:
+        return cfg()[0].public_demo
+
+    def own_ids() -> list[str]:
+        return session.get("own", [])
+
+    def remember(record: Record, live: bool) -> None:
+        if demo():
+            session["own"] = (own_ids() + [record.id])[-50:]
+            if live:
+                session["live_used"] = session.get("live_used", 0) + 1
+                daily.add()
+
+    def session_left() -> int:
+        return max(0, cfg()[0].demo_max_per_session - session.get("live_used", 0))
+
+    def quota_error() -> str | None:
+        """Причина отказа в живой генерации в режиме демо или None."""
+        if not demo():
+            return None
+        if session_left() <= 0:
+            return "Лимит демо на эту сессию исчерпан. Можно сгенерировать КП без API (галочка «без API»)."
+        if daily.left() <= 0:
+            return "Дневной лимит демо исчерпан, попробуйте завтра. Без API генерация доступна."
+        return None
 
     def profiles() -> list[dict]:
         out = []
@@ -76,6 +108,8 @@ def create_app(settings: Settings | None = None, output_root: Path = OUTPUT_DIR)
         }
 
     def record_or_404(record_id: str) -> Record:
+        if demo() and record_id not in own_ids():  # в демо чужие КП не видны
+            abort(404)
         record = get_record(record_id, cfg()[1])
         if record is None:
             abort(404)
@@ -89,6 +123,8 @@ def create_app(settings: Settings | None = None, output_root: Path = OUTPUT_DIR)
     def globals_():
         settings, _ = cfg()
         return {
+            "demo_mode": settings.public_demo,
+            "demo_left": min(session_left(), daily.left()) if settings.public_demo else None,
             "mock_mode": settings.mock,
             "model_name": settings.openai_model or "модель не задана",
             "money": format_money,
@@ -133,12 +169,16 @@ def create_app(settings: Settings | None = None, output_root: Path = OUTPUT_DIR)
         except ValidationError as e:
             return back(field_errors(e))
 
+        live = not (values["force_mock"] or cfg()[0].mock)
+        if live and (reason := quota_error()):
+            return back({"form": reason}, 429)
         try:
             record = run(brief, values["profile"], values["force_mock"])
         except GenerationError as e:
             return back({"form": str(e)}, 502, e.details)
         except ProfileError as e:
             return back({"form": str(e)}, 500)
+        remember(record, live)
         return redirect(url_for("preview", record_id=record.id))
 
     @app.get("/p/<record_id>")
@@ -177,16 +217,26 @@ def create_app(settings: Settings | None = None, output_root: Path = OUTPUT_DIR)
     def regenerate(record_id: str):
         record = record_or_404(record_id)
         brief = Brief.model_validate(record.load_json("brief"))
+        force_mock = record.meta["mode"] == "mock"
+        live = not (force_mock or cfg()[0].mock)
+        if live and (reason := quota_error()):
+            flash(reason)
+            return redirect(url_for("preview", record_id=record_id))
         try:
-            new = run(brief, record.meta["profile_id"], record.meta["mode"] == "mock")
+            new = run(brief, record.meta["profile_id"], force_mock)
         except (GenerationError, ProfileError) as e:
             flash(f"Не удалось сгенерировать заново: {e}")
             return redirect(url_for("preview", record_id=record_id))
+        remember(new, live)
         return redirect(url_for("preview", record_id=new.id))
 
     @app.get("/history")
     def history():
-        return render_template("history.html", records=list_history(cfg()[1]))
+        records = list_history(cfg()[1])
+        if demo():
+            mine = set(own_ids())
+            records = [r for r in records if r.id in mine]
+        return render_template("history.html", records=records)
 
     @app.get("/fonts/<path:filename>")
     def fonts(filename: str):

@@ -1,0 +1,16 @@
+.git
+.venv
+.env
+.env.*
+!.env.example
+__pycache__
+*.pyc
+.pytest_cache
+output
+data
+demo
+PROJECT.md
+PLAN.md
+PRICING.md
+.DS_Store
+.claude
