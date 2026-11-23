@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="page-head">
-  <h1>Новое коммерческое предложение</h1>
-  <p class="sub">Заполните бриф после разговора с заказчиком. Структура, кейсы и стоимость соберутся из профиля исполнителя.</p>
+  <h1>{{ t('form_h1') }}</h1>
+  <p class="sub">{{ t('form_sub') }}</p>
 </div>
 
 {% if demo_mode %}
 <div class="alert">
-  Это демо. Генераций через OpenAI в этой сессии осталось: <strong>{{ demo_left }}</strong>. Без API (галочка «без API») можно сколько угодно, но текст будет заготовкой. Созданные КП видны только вам.
+  {{ t('demo_note', n=demo_left) | safe }}
 </div>
 {% endif %}
 
@@ -21,16 +21,16 @@
 <form method="post" action="{{ url_for('generate_view') }}" class="card form" id="brief-form" novalidate>
   <div class="row">
     <label class="field grow">
-      <span class="label">Профиль исполнителя</span>
+      <span class="label">{{ t('f_profile') }}</span>
       <select name="profile">
         {% for p in profiles %}
-        <option value="{{ p.id }}" {{ 'selected' if values.profile == p.id }}>{{ p.name }}{{ ' (демо)' if p.demo }}</option>
+        <option value="{{ p.id }}" {{ 'selected' if values.profile == p.id }}>{{ p.name }}{{ t('demo_suffix') if p.demo }}</option>
         {% endfor %}
       </select>
       {% if errors.profile %}<span class="err">{{ errors.profile }}</span>{% endif %}
     </label>
     <fieldset class="field">
-      <span class="label">Язык КП</span>
+      <span class="label">{{ t('f_language') }}</span>
       <div class="seg">
         <label><input type="radio" name="language" value="ru" {{ 'checked' if values.language != 'en' }}><span>RU · ₽</span></label>
         <label><input type="radio" name="language" value="en" {{ 'checked' if values.language == 'en' }}><span>EN · $</span></label>
@@ -40,51 +40,51 @@
 
   <div class="row">
     <label class="field grow">
-      <span class="label">Компания или заказчик <b>*</b></span>
+      <span class="label">{{ t('f_company') }} <b>*</b></span>
       <input name="company" value="{{ values.company }}" maxlength="200" required>
       {% if errors.company %}<span class="err">{{ errors.company }}</span>{% endif %}
     </label>
     <label class="field grow">
-      <span class="label">Контактное лицо</span>
-      <input name="contact_name" value="{{ values.contact_name }}" maxlength="200" placeholder="Имя, должность">
+      <span class="label">{{ t('f_contact') }}</span>
+      <input name="contact_name" value="{{ values.contact_name }}" maxlength="200" placeholder="{{ t('ph_contact') }}">
     </label>
   </div>
 
   <label class="field">
-    <span class="label">Отрасль <b>*</b></span>
+    <span class="label">{{ t('f_industry') }} <b>*</b></span>
     <input name="industry" value="{{ values.industry }}" maxlength="200" required>
     {% if errors.industry %}<span class="err">{{ errors.industry }}</span>{% endif %}
   </label>
 
   <label class="field">
-    <span class="label">Задача и боль заказчика <b>*</b></span>
-    <textarea name="task" rows="6" maxlength="5000" required placeholder="Своими словами заказчика: что сейчас не так, что хочет получить">{{ values.task }}</textarea>
+    <span class="label">{{ t('f_task') }} <b>*</b></span>
+    <textarea name="task" rows="6" maxlength="5000" required placeholder="{{ t('ph_task') }}">{{ values.task }}</textarea>
     {% if errors.task %}<span class="err">{{ errors.task }}</span>{% endif %}
   </label>
 
   <div class="row">
     <label class="field grow">
-      <span class="label">Бюджет (ориентир)</span>
-      <input name="budget" value="{{ values.budget }}" maxlength="200" placeholder="до 60 000 ₽">
+      <span class="label">{{ t('f_budget') }}</span>
+      <input name="budget" value="{{ values.budget }}" maxlength="200" placeholder="{{ t('ph_budget') }}">
     </label>
     <label class="field grow">
-      <span class="label">Сроки</span>
-      <input name="deadline" value="{{ values.deadline }}" maxlength="200" placeholder="за месяц">
+      <span class="label">{{ t('f_deadline') }}</span>
+      <input name="deadline" value="{{ values.deadline }}" maxlength="200" placeholder="{{ t('ph_deadline') }}">
     </label>
   </div>
 
   <label class="field">
-    <span class="label">Что еще прозвучало на созвоне</span>
-    <textarea name="notes" rows="3" maxlength="3000" placeholder="Какие системы уже есть, доступы, ограничения">{{ values.notes }}</textarea>
+    <span class="label">{{ t('f_notes') }}</span>
+    <textarea name="notes" rows="3" maxlength="3000" placeholder="{{ t('ph_notes') }}">{{ values.notes }}</textarea>
   </label>
 
   <div class="actions">
-    <button type="submit" class="btn btn-primary" id="submit">Сгенерировать КП</button>
-    <button type="button" class="btn btn-ghost" id="fill-example">Заполнить пример</button>
+    <button type="submit" class="btn btn-primary" id="submit">{{ t('btn_generate') }}</button>
+    <button type="button" class="btn btn-ghost" id="fill-example">{{ t('btn_example') }}</button>
     {% if not mock_mode %}
-    <label class="check"><input type="checkbox" name="force_mock" {{ 'checked' if values.force_mock }}> без API (заготовка)</label>
+    <label class="check"><input type="checkbox" name="force_mock" {{ 'checked' if values.force_mock }}> {{ t('chk_mock') }}</label>
     {% endif %}
-    <span class="hint" id="wait" hidden>Генерирую, обычно это 20–60 секунд…</span>
+    <span class="hint" id="wait" hidden>{{ t('wait') }}</span>
   </div>
 </form>
 
@@ -102,7 +102,7 @@ document.getElementById("fill-example").addEventListener("click", () => {
 form.addEventListener("submit", () => {
   const btn = document.getElementById("submit");
   btn.disabled = true;
-  btn.textContent = "Генерирую…";
+  btn.textContent = {{ t('generating') | tojson }};
   document.getElementById("wait").hidden = false;
 });
 </script>

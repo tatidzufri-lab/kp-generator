@@ -3,33 +3,33 @@
 {% block content %}
 <div class="page-head preview-head">
   <div>
-    <a class="back" href="{{ url_for('history') }}">← История</a>
+    <a class="back" href="{{ url_for('history') }}">{{ t('back_history') }}</a>
     <h1>{{ m.project_title }}</h1>
-    <p class="sub">{{ m.company }} · {{ m.profile_name }}{{ ' (демо)' if m.demo_profile }} · {{ m.language | upper }} · {{ m.created_at | dt }}</p>
+    <p class="sub">{{ m.company }} · {{ m.profile_name }}{{ t('demo_suffix') if m.demo_profile }} · {{ m.language | upper }} · {{ m.created_at | dt }}</p>
   </div>
   <div class="actions">
-    <a class="btn btn-primary" href="{{ url_for('pdf', record_id=r.id) }}">Скачать PDF</a>
-    <form method="post" action="{{ url_for('regenerate', record_id=r.id) }}" class="inline" onsubmit="this.querySelector('button').disabled=true; this.querySelector('button').textContent='Генерирую…'">
-      <button class="btn btn-ghost" type="submit">Сгенерировать заново</button>
+    <a class="btn btn-primary" href="{{ url_for('pdf', record_id=r.id) }}">{{ t('download_pdf') }}</a>
+    <form method="post" action="{{ url_for('regenerate', record_id=r.id) }}" class="inline" onsubmit="this.querySelector('button').disabled=true; this.querySelector('button').textContent={{ t('generating') | tojson | forceescape }}">
+      <button class="btn btn-ghost" type="submit">{{ t('regenerate') }}</button>
     </form>
   </div>
 </div>
 
 {% if m.warnings %}
 <div class="alert alert-warn">
-  <strong>Проверка по Tone of Voice: поправьте перед отправкой</strong>
+  <strong>{{ t('tov_warn') }}</strong>
   <ul>{% for w in m.warnings %}<li>{{ w }}</li>{% endfor %}</ul>
 </div>
 {% endif %}
 
 <div class="preview-grid">
-  <iframe class="doc-frame" src="{{ url_for('document', record_id=r.id) }}" title="КП" id="doc"></iframe>
+  <iframe class="doc-frame" src="{{ url_for('document', record_id=r.id) }}" title="{{ t('doc_frame') }}" id="doc"></iframe>
 
   <aside class="card side">
-    <h2>Расчет</h2>
-    <p class="muted small">Видно только вам, в PDF не попадает.</p>
+    <h2>{{ t('calc') }}</h2>
+    <p class="muted small">{{ t('calc_private') }}</p>
     <table class="calc">
-      <thead><tr><th>Этап</th><th>Ур.</th><th class="num">Часы</th><th class="num">Цена</th></tr></thead>
+      <thead><tr><th>{{ t('th_stage') }}</th><th>{{ t('th_tier') }}</th><th class="num">{{ t('th_hours') }}</th><th class="num">{{ t('th_price') }}</th></tr></thead>
       <tbody>
       {% for row in rows %}
         <tr>
@@ -41,16 +41,16 @@
       {% endfor %}
       </tbody>
       <tfoot>
-        <tr><td colspan="2">Итого</td><td class="num">{{ pricing.total_hours | round(1) }}</td><td class="num">{{ money(pricing.total_price, pricing.currency) }}</td></tr>
+        <tr><td colspan="2">{{ t('total') }}</td><td class="num">{{ pricing.total_hours | round(1) }}</td><td class="num">{{ money(pricing.total_price, pricing.currency) }}</td></tr>
       </tfoot>
     </table>
     <dl class="facts">
-      <div><dt>Ставка</dt><dd>{{ pricing.rate | round(0) | int }} {{ '₽' if pricing.currency == 'RUB' else '$' }}/ч</dd></div>
-      <div><dt>Токены агента</dt><dd>${{ '%g' % pricing.total_tokens_usd }}</dd></div>
-      <div><dt>Срок</dt><dd>{{ pricing.total_days }} раб. дн.</dd></div>
-      <div><dt>Генерация</dt><dd>{{ 'заготовка' if m.mode == 'mock' else m.model }}, попыток: {{ m.attempts }}</dd></div>
+      <div><dt>{{ t('rate') }}</dt><dd>{{ pricing.rate | round(0) | int }} {{ '₽' if pricing.currency == 'RUB' else '$' }}{{ t('per_hour') }}</dd></div>
+      <div><dt>{{ t('agent_tokens') }}</dt><dd>${{ '%g' % pricing.total_tokens_usd }}</dd></div>
+      <div><dt>{{ t('term') }}</dt><dd>{{ pricing.total_days }} {{ t('workdays_short') }}</dd></div>
+      <div><dt>{{ t('generation') }}</dt><dd>{{ t('canned') if m.mode == 'mock' else m.model }}, {{ t('attempts') }}: {{ m.attempts }}</dd></div>
       {% if m.mode == 'live' %}
-      <div><dt>Токены запроса</dt><dd>вход {{ m.usage.input_tokens }} (кэш {{ m.usage.cached_tokens }}), выход {{ m.usage.output_tokens }}</dd></div>
+      <div><dt>{{ t('req_tokens') }}</dt><dd>{{ t('tok_line', i=m.usage.input_tokens, c=m.usage.cached_tokens, o=m.usage.output_tokens) }}</dd></div>
       {% endif %}
     </dl>
   </aside>

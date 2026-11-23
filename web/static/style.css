@@ -135,3 +135,9 @@ table { border-collapse: collapse; width: 100%; }
   .form { padding: 16px; }
   .bar nav { order: 3; flex-basis: 100%; }
 }
+
+/* переключатель языка интерфейса */
+.lang-switch { display: flex; gap: 8px; font-size: 13px; font-weight: 600; letter-spacing: .02em; }
+.lang-switch a { color: rgba(255,255,255,.65); text-decoration: none; }
+.lang-switch a:hover { color: #fff; }
+.lang-switch b { color: #fff; }

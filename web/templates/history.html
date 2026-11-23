@@ -1,16 +1,16 @@
 {% extends "base.html" %}
-{% block title %}История КП{% endblock %}
+{% block title %}{{ t('hist_title') }}{% endblock %}
 {% block content %}
 <div class="page-head">
-  <h1>История</h1>
-  <p class="sub">{% if demo_mode %}КП, созданные в этой сессии, новые сверху.{% else %}Все сгенерированные КП, новые сверху. Файлы лежат в папке <code>output/</code>.{% endif %}</p>
+  <h1>{{ t('hist_h1') }}</h1>
+  <p class="sub">{% if demo_mode %}{{ t('hist_sub_demo') }}{% else %}{{ t('hist_sub') | safe }}{% endif %}</p>
 </div>
 
 {% if records %}
 <div class="card table-card">
   <table class="history">
     <thead>
-      <tr><th>Дата</th><th>Клиент и проект</th><th>Исполнитель</th><th>Язык</th><th class="num">Сумма</th><th>Режим</th><th></th></tr>
+      <tr><th>{{ t('th_date') }}</th><th>{{ t('th_client') }}</th><th>{{ t('th_profile') }}</th><th>{{ t('th_lang') }}</th><th class="num">{{ t('th_sum') }}</th><th>{{ t('th_mode') }}</th><th></th></tr>
     </thead>
     <tbody>
       {% for r in records %}
@@ -18,10 +18,10 @@
       <tr>
         <td class="nowrap">{{ m.created_at | dt }}</td>
         <td><a href="{{ url_for('preview', record_id=r.id) }}"><strong>{{ m.company }}</strong></a><div class="muted small">{{ m.project_title }}</div></td>
-        <td>{{ m.profile_name }}{% if m.demo_profile %} <span class="pill">демо</span>{% endif %}</td>
+        <td>{{ m.profile_name }}{% if m.demo_profile %} <span class="pill">{{ t('pill_demo') }}</span>{% endif %}</td>
         <td>{{ m.language | upper }}</td>
-        <td class="num nowrap">{{ money(m.total_price, m.currency) }}<div class="muted small">{{ m.total_days }} раб. дн.</div></td>
-        <td>{% if m.mode == 'mock' %}<span class="pill">заготовка</span>{% else %}{{ m.model }}{% endif %}{% if m.warnings %} <span class="pill pill-warn" title="{{ m.warnings | join('; ') }}">{{ m.warnings | length }} замеч.</span>{% endif %}</td>
+        <td class="num nowrap">{{ money(m.total_price, m.currency) }}<div class="muted small">{{ m.total_days }} {{ t('workdays_short') }}</div></td>
+        <td>{% if m.mode == 'mock' %}<span class="pill">{{ t('pill_mock') }}</span>{% else %}{{ m.model }}{% endif %}{% if m.warnings %} <span class="pill pill-warn" title="{{ m.warnings | join('; ') }}">{{ m.warnings | length }} {{ t('remarks') }}</span>{% endif %}</td>
         <td class="nowrap"><a href="{{ url_for('pdf', record_id=r.id) }}">PDF</a></td>
       </tr>
       {% endfor %}
@@ -30,8 +30,8 @@
 </div>
 {% else %}
 <div class="card empty">
-  <p>Пока ни одного КП.</p>
-  <a class="btn btn-primary" href="{{ url_for('index') }}">Создать первое</a>
+  <p>{{ t('empty') }}</p>
+  <a class="btn btn-primary" href="{{ url_for('index') }}">{{ t('create_first') }}</a>
 </div>
 {% endif %}
 {% endblock %}

@@ -32,14 +32,15 @@ from kp.profiles import ProfileError, list_profiles, load_profile
 from kp.render import FONTS_DIR, days_label, render_html
 from kp.service import create_proposal
 from kp.storage import Record, get_record, list_history, slugify
+from ui_i18n import current_lang, t
 
 FIELDS = ("company", "contact_name", "industry", "task", "budget", "deadline", "notes")
 
 ERROR_TEXT = {
-    "missing": "Обязательное поле",
-    "string_too_short": "Слишком коротко: минимум {min_length} символов",
-    "string_too_long": "Слишком длинно: максимум {max_length} символов",
-    "literal_error": "Недопустимое значение",
+    "missing": "err_missing",
+    "string_too_short": "err_short",
+    "string_too_long": "err_long",
+    "literal_error": "err_literal",
 }
 
 
@@ -49,8 +50,8 @@ def field_errors(e: ValidationError) -> dict[str, str]:
         name = str(err["loc"][0]) if err["loc"] else "form"
         ctx = err.get("ctx") or {}
         kind = "missing" if err["type"] == "string_too_short" and ctx.get("min_length") == 1 else err["type"]
-        template = ERROR_TEXT.get(kind, err["msg"])
-        out[name] = template.format(**ctx)
+        key = ERROR_TEXT.get(kind)
+        out[name] = t(key, **ctx) if key else err["msg"]
     return out
 
 
@@ -89,16 +90,17 @@ def create_app(settings: Settings | None = None, output_root: Path | None = None
         if not demo():
             return None
         if session_left() <= 0:
-            return "Лимит демо на эту сессию исчерпан. Можно сгенерировать КП без API (галочка «без API»)."
+            return t("quota_session")
         if daily.left() <= 0:
-            return "Дневной лимит демо исчерпан, попробуйте завтра. Без API генерация доступна."
+            return t("quota_day")
         return None
 
     def profiles() -> list[dict]:
+        lang = current_lang()
         out = []
         for pid in list_profiles():
             p = load_profile(pid)
-            out.append({"id": pid, "name": p.executor.name.ru, "demo": p.demo})
+            out.append({"id": pid, "name": p.executor.name.get(lang), "demo": p.demo})
         return out
 
     def examples() -> dict:
@@ -122,12 +124,15 @@ def create_app(settings: Settings | None = None, output_root: Path | None = None
     @app.context_processor
     def globals_():
         settings, _ = cfg()
+        lang = current_lang()
         return {
             "demo_mode": settings.public_demo,
             "demo_left": min(session_left(), daily.left()) if settings.public_demo else None,
             "mock_mode": settings.mock,
-            "model_name": settings.openai_model or "модель не задана",
+            "model_name": settings.openai_model or t("no_model", lang),
             "money": format_money,
+            "ui_lang": lang,
+            "t": lambda key, **kw: t(key, lang, **kw),
         }
 
     @app.template_filter("dt")
@@ -140,7 +145,7 @@ def create_app(settings: Settings | None = None, output_root: Path | None = None
     @app.get("/")
     def index():
         return render_template(
-            "form.html", profiles=profiles(), values={"language": "ru", "profile": "tatiana"},
+            "form.html", profiles=profiles(), values={"language": current_lang(), "profile": "tatiana"},
             errors={}, examples=examples(),
         )
 
@@ -159,7 +164,7 @@ def create_app(settings: Settings | None = None, output_root: Path | None = None
             ), status
 
         if values["profile"] not in list_profiles():
-            return back({"profile": "Выберите профиль исполнителя"})
+            return back({"profile": t("err_profile")})
         try:
             brief = Brief.model_validate({
                 **{k: (values[k] or None) for k in FIELDS},
@@ -175,7 +180,7 @@ def create_app(settings: Settings | None = None, output_root: Path | None = None
         try:
             record = run(brief, values["profile"], values["force_mock"])
         except GenerationError as e:
-            return back({"form": str(e)}, 502, e.details)
+            return back({"form": e.text(current_lang())}, 502, e.details)
         except ProfileError as e:
             return back({"form": str(e)}, 500)
         remember(record, live)
@@ -186,9 +191,8 @@ def create_app(settings: Settings | None = None, output_root: Path | None = None
         record = record_or_404(record_id)
         proposal = Proposal.model_validate(record.load_json("proposal"))
         pricing = Pricing.from_dict(record.load_json("pricing"))
-        lang = record.meta["language"]
         rows = [
-            {"stage": st, "cost": cost, "days": days_label(cost.days, lang)}
+            {"stage": st, "cost": cost, "days": days_label(cost.days, current_lang())}
             for st, cost in zip(proposal.stages, pricing.stages)
         ]
         return render_template("preview.html", r=record, m=record.meta, pricing=pricing, rows=rows)
@@ -225,7 +229,8 @@ def create_app(settings: Settings | None = None, output_root: Path | None = None
         try:
             new = run(brief, record.meta["profile_id"], force_mock)
         except (GenerationError, ProfileError) as e:
-            flash(f"Не удалось сгенерировать заново: {e}")
+            msg = e.text(current_lang()) if isinstance(e, GenerationError) else str(e)
+            flash(t("regen_failed", e=msg))
             return redirect(url_for("preview", record_id=record_id))
         remember(new, live)
         return redirect(url_for("preview", record_id=new.id))
@@ -244,7 +249,7 @@ def create_app(settings: Settings | None = None, output_root: Path | None = None
 
     @app.errorhandler(404)
     def not_found(_):
-        return render_template("message.html", title="Не найдено", text="Такого КП нет в истории."), 404
+        return render_template("message.html", title=t("nf_title"), text=t("nf_text")), 404
 
     return app
 

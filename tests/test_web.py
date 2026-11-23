@@ -80,3 +80,34 @@ def test_missing_record_404(client):
     assert client.get("/p/2026-01-01_nope_000000").status_code == 404
     assert client.get("/p/..%2F..%2Fetc").status_code == 404
     assert client.get("/p/x/pdf").status_code == 404
+
+
+def test_ui_english_switch_and_persist(client):
+    html = client.get("/?lang=en").get_data(as_text=True)
+    assert 'lang="en"' in html
+    assert "New commercial proposal" in html and "Generate proposal" in html
+    assert "Tetiana Dziubas" in html and "Lampa Digital (demo)" in html
+    assert 'value="en" checked' in html  # язык КП по умолчанию = язык интерфейса
+    assert "Новое коммерческое предложение" not in html
+    # выбор запоминается в сессии
+    assert "History" in client.get("/history").get_data(as_text=True)
+    # и переключается обратно
+    assert "Новое коммерческое предложение" in client.get("/?lang=ru").get_data(as_text=True)
+
+
+def test_ui_language_from_accept_language(client):
+    html = client.get("/", headers={"Accept-Language": "en-US,en;q=0.9"}).get_data(as_text=True)
+    assert "New commercial proposal" in html
+
+
+def test_english_flow(client):
+    client.get("/?lang=en")
+    r = client.post("/generate", data={**example("en"), "profile": "tatiana"})
+    assert r.status_code == 302
+    page = client.get(r.headers["Location"]).get_data(as_text=True)
+    assert "Download PDF" in page and "Estimate" in page and "business days" in page
+    assert "Скачать PDF" not in page
+    r = client.post("/generate", data={"profile": "tatiana", "language": "en"})
+    assert r.status_code == 400 and "Required field" in r.get_data(as_text=True)
+    nf = client.get("/p/nope").get_data(as_text=True)
+    assert "Not found" in nf

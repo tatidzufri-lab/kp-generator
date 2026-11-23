@@ -28,9 +28,13 @@ MAX_ATTEMPTS = 2
 class GenerationError(Exception):
     """Ошибка, которую можно показать пользователю как есть."""
 
-    def __init__(self, message: str, details: list[str] | None = None):
+    def __init__(self, message: str, details: list[str] | None = None, en: str | None = None):
         super().__init__(message)
         self.details = details or []
+        self.en = en or message  # текст для английского интерфейса
+
+    def text(self, lang: str) -> str:
+        return self.en if lang == "en" else str(self)
 
 
 @dataclass
@@ -71,7 +75,7 @@ class OpenAIDrafter:
 
     def __init__(self, api_key: str, model: str, timeout: float = 120):
         if not model:
-            raise GenerationError("Не задана модель: укажите OPENAI_MODEL в .env.")
+            raise GenerationError("Не задана модель: укажите OPENAI_MODEL в .env.", en="No model set: add OPENAI_MODEL to .env.")
         self.model = model
         # SDK сам повторяет 408/409/429/5xx и обрывы связи с паузой.
         self.client = OpenAI(api_key=api_key, timeout=timeout, max_retries=3)
@@ -85,17 +89,17 @@ class OpenAIDrafter:
                 text_format=Proposal,
             )
         except openai.AuthenticationError as e:
-            raise GenerationError("OpenAI отклонил ключ. Проверьте OPENAI_API_KEY в .env.") from e
+            raise GenerationError("OpenAI отклонил ключ. Проверьте OPENAI_API_KEY в .env.", en="OpenAI rejected the key. Check OPENAI_API_KEY in .env.") from e
         except openai.NotFoundError as e:
-            raise GenerationError(f"Модель «{self.model}» недоступна на этом аккаунте. Проверьте OPENAI_MODEL.") from e
+            raise GenerationError(f"Модель «{self.model}» недоступна на этом аккаунте. Проверьте OPENAI_MODEL.", en=f"Model “{self.model}” is not available on this account. Check OPENAI_MODEL.") from e
         except openai.RateLimitError as e:
-            raise GenerationError("Превышен лимит запросов или закончился баланс OpenAI. Попробуйте позже.") from e
+            raise GenerationError("Превышен лимит запросов или закончился баланс OpenAI. Попробуйте позже.", en="OpenAI rate limit hit or balance is empty. Please try later.") from e
         except (openai.APITimeoutError, openai.APIConnectionError) as e:
-            raise GenerationError("Нет связи с OpenAI. Проверьте интернет и попробуйте еще раз.") from e
+            raise GenerationError("Нет связи с OpenAI. Проверьте интернет и попробуйте еще раз.", en="Cannot reach OpenAI. Check the connection and try again.") from e
         except openai.BadRequestError as e:
-            raise GenerationError(f"OpenAI отклонил запрос: {e.message}") from e
+            raise GenerationError(f"OpenAI отклонил запрос: {e.message}", en=f"OpenAI rejected the request: {e.message}") from e
         except openai.APIStatusError as e:
-            raise GenerationError(f"Ошибка OpenAI ({e.status_code}). Попробуйте позже.") from e
+            raise GenerationError(f"Ошибка OpenAI ({e.status_code}). Попробуйте позже.", en=f"OpenAI error ({e.status_code}). Please try later.") from e
 
         if resp.output_parsed is None:
             refusal = next(
@@ -106,6 +110,7 @@ class OpenAIDrafter:
             raise GenerationError(
                 "Модель отказалась отвечать." if refusal else "Модель вернула ответ не по схеме.",
                 [refusal] if refusal else [],
+                en="The model refused to answer." if refusal else "The model returned a response that does not match the schema.",
             )
 
         u = resp.usage
@@ -143,7 +148,7 @@ class MockDrafter:
     def draft(self, brief: Brief, profile: Profile, feedback: list[str] | None) -> tuple[Proposal, Usage]:
         path = self.fixtures_dir / f"mock_{profile.id}_{brief.language}.json"
         if not path.exists():
-            raise GenerationError(f"Для mock-режима нет заготовки {path.name}.")
+            raise GenerationError(f"Для mock-режима нет заготовки {path.name}.", en=f"No canned draft {path.name} for mock mode.")
         values = _SafeDict(
             company=brief.company,
             contact=brief.contact_name or brief.company,
@@ -190,7 +195,7 @@ def generate(brief: Brief, profile: Profile, drafter: Drafter) -> GenerationResu
 
         if attempt == MAX_ATTEMPTS:
             if errors:
-                raise GenerationError("КП не прошло проверку структуры после повтора.", errors + style)
+                raise GenerationError("КП не прошло проверку структуры после повтора.", errors + style, en="The proposal failed the structure check after a retry.")
             # Стиль не блокирует: КП отдается с предупреждениями для ручной правки.
             return GenerationResult(proposal, drafter.mode, drafter.model, attempt, style, total)
 

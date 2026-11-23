@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ru">
+<html lang="{{ ui_lang }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}Генератор КП{% endblock %}</title>
+<title>{% block title %}{{ t('app_title') }}{% endblock %}</title>
 <style>
 @font-face { font-family: "Inter"; font-weight: 400; src: url("{{ url_for('fonts', filename='inter/Inter-Regular.ttf') }}"); }
 @font-face { font-family: "Inter"; font-weight: 500; src: url("{{ url_for('fonts', filename='inter/Inter-Medium.ttf') }}"); }
@@ -11,18 +11,23 @@
 @font-face { font-family: "Inter"; font-weight: 700; src: url("{{ url_for('fonts', filename='inter/Inter-Bold.ttf') }}"); }
 @font-face { font-family: "Space Grotesk"; font-weight: 700; src: url("{{ url_for('fonts', filename='space-grotesk/SpaceGrotesk-Bold.ttf') }}"); }
 </style>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=1">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=2">
 </head>
 <body>
 <header class="bar">
   <div class="bar-inner">
-    <a class="brand" href="{{ url_for('index') }}">КП<span>·</span>генератор</a>
+    <a class="brand" href="{{ url_for('index') }}">{{ t('brand') | safe }}</a>
     <nav>
-      <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' }}">Новое КП</a>
-      <a href="{{ url_for('history') }}" class="{{ 'active' if request.endpoint == 'history' }}">{{ 'Мои КП' if demo_mode else 'История' }}</a>
+      <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' }}">{{ t('nav_new') }}</a>
+      <a href="{{ url_for('history') }}" class="{{ 'active' if request.endpoint == 'history' }}">{{ t('nav_mine') if demo_mode else t('nav_history') }}</a>
     </nav>
-    <span class="mode {{ 'mode-mock' if mock_mode else 'mode-live' }}" title="{{ 'Нет ключа OpenAI или KP_MOCK=1' if mock_mode else 'Запросы идут в OpenAI' }}">
-      {{ 'Без API: заготовки' if mock_mode else 'OpenAI · ' ~ model_name }}
+    <span class="mode {{ 'mode-mock' if mock_mode else 'mode-live' }}" title="{{ t('mode_mock_hint') if mock_mode else t('mode_live_hint') }}">
+      {{ t('mode_mock') if mock_mode else 'OpenAI · ' ~ model_name }}
+    </span>
+    <span class="lang-switch">
+      {% for code in ('ru', 'en') %}
+      {% if code == ui_lang %}<b>{{ code | upper }}</b>{% else %}<a href="{{ request.path if request.method == 'GET' else url_for('index') }}?lang={{ code }}" hreflang="{{ code }}">{{ code | upper }}</a>{% endif %}
+      {% endfor %}
     </span>
   </div>
 </header>
