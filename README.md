@@ -1,107 +1,109 @@
-# Генератор коммерческих предложений по брифу
+# Project proposal generator: a branded PDF built from a call brief
 
-Веб-приложение для фрилансеров и небольших студий. После созвона с заказчиком я заполняю короткий бриф, и через полминуты у меня готов PDF с коммерческим предложением в моем фирменном стиле. Демо: [kp.tatidzufri.com](https://kp.tatidzufri.com).
+A web app for freelancers and small studios. After a call with a prospect I fill in a short brief, and a PDF proposal in my brand style is ready. Demo: [kp.tatidzufri.com](https://kp.tatidzufri.com).
 
-![Превью КП и расчет стоимости](demo/preview.png)
+This is a practice project. The interface and the proposals work in Russian and English. Case study: [tatidzufri.com/en/case/kp-generator](https://tatidzufri.com/en/case/kp-generator).
 
-## О проекте
+![Proposal preview and cost estimate](demo/preview.png)
 
-КП собирается из трех источников. Бриф дает задачу заказчика его словами. Профиль исполнителя в YAML дает тон, правила текста, палитру, услуги и кейсы. Языковая модель OpenAI пишет содержательную часть: цель, решение, этапы, следующий шаг. Стоимость и сроки считает код по ставке из настроек.
+## About the project
 
-Генератор подходит любому исполнителю. В репозитории два профиля: мой (AI-автоматизация, 13 кейсов с [tatidzufri.com](https://tatidzufri.com)) и вымышленная студия «Лампа Digital». На втором видно, как меняются голос, кейсы и оформление.
+A proposal is assembled from three sources. The brief gives the prospect's task in their own words. The provider profile in YAML gives the tone, writing rules, palette, services and case studies. An OpenAI language model writes the substance: goal, solution, stages, next step. Cost and timeline are calculated by code from the rate in the settings.
 
-## Задача
+The generator works for any provider. The repository has two profiles: mine (AI automation, 13 case studies from [tatidzufri.com](https://tatidzufri.com)) and a fictional studio, "Lampa Digital". The second shows how the voice, cases and design change.
 
-КП уходит заказчику после первого разговора, когда он уже готов работать и ждет деталей. Каждый раз нужно подобрать кейсы под его задачу, расписать этапы, оценить часы и сверстать документ. Текст при этом пишется заново: у салона красоты и у бутик-отеля разные боли, и общие слова они видят сразу.
+## The task
 
-Если просто попросить модель написать КП, она пишет гладко, но легко придумывает цифры и опыт, которого у исполнителя нет. В КП каждое утверждение должно держаться на факте из брифа или из реального кейса.
+A proposal goes out after the first conversation, when the prospect is ready to work and waiting for details. Each time you have to match case studies to their task, lay out the stages, estimate hours and lay out the document. The text has to be written fresh: a beauty salon and a boutique hotel have different pains, and they spot generic words right away.
 
-## Решение
+Ask a model to just write a proposal and it writes smoothly, but it easily invents numbers and experience the provider doesn't have. In a proposal every claim has to rest on a fact from the brief or from a real case study.
 
-Я заполняю форму: компания, отрасль, задача словами заказчика, бюджет, сроки, заметки с созвона. Дальше работает конвейер.
+## How it works
 
-1. **Модель пишет текст по строгой схеме.** Ответ проверяется Pydantic-моделью через Structured Outputs, поэтому структура КП всегда одна и та же.
-2. **Кейсы подставляются из профиля.** Модель выбирает 1–3 кейса по id и одной фразой объясняет, чем они похожи на задачу. Цифры результатов шаблон берет из профиля, переписать их модель не может.
-3. **Цену считает код.** Модель только относит каждый этап к уровню сложности S, M или L. Часы, сумму и срок в рабочих днях считает `kp/pricing.py` по ставке из `.env`.
-4. **Текст проверяется по моему Tone of Voice.** Стоп-фразы, эмодзи, буква «ё», шаблоны вроде «не X, а Y», длинные тире, одинаково начатые пункты списка, объем 250–400 слов. Если правило нарушено, генератор делает один повтор и передает модели список замечаний.
-5. **Шаблон собирает PDF.** Jinja2 и WeasyPrint, A4 на две страницы, шрифты Space Grotesk и Inter, цвета из профиля.
+I fill in a form: company, industry, the task in the prospect's words, budget, timeline, notes from the call. Then the pipeline runs.
 
-Без API-ключа приложение работает на заготовленных ответах. Так его можно запустить и посмотреть сразу после клонирования.
+1. **The model writes to a strict schema.** The answer is validated by a Pydantic model through Structured Outputs, so the proposal always has the same structure.
+2. **Case studies come from the profile.** The model picks 1–3 cases by id and explains in one sentence how they relate to the task. Result figures are taken from the profile by the template; the model can't rewrite them.
+3. **Code calculates the price.** The model only assigns each stage a complexity level, S, M or L. Hours, the total and the timeline in working days are calculated by `kp/pricing.py` from the rate in `.env`.
+4. **The text is checked against my tone of voice.** Stop phrases, emoji, the letter «ё», patterns like "not X but Y", long dashes, list items that all start the same way, a length of 250–400 words. If a rule is broken, the generator retries once and gives the model the list of issues.
+5. **A template builds the PDF.** Jinja2 and WeasyPrint, two A4 pages, Space Grotesk and Inter fonts, colors from the profile.
 
-## Как это выглядит
+Without an API key the app runs on prepared answers, so you can start it and look around right after cloning.
 
-**Бриф.** Профиль исполнителя, язык КП (от него зависит валюта, ₽ или $) и поля брифа. Кнопка «Заполнить пример» подставляет демо-бриф.
+## What it looks like
 
-Интерфейс двуязычный: RU и EN переключаются в шапке или ссылкой `?lang=en`, без выбора язык берется из настроек браузера. Язык КП выбирается отдельно, по умолчанию совпадает с языком интерфейса.
+**The brief.** The provider profile, the proposal language (it sets the currency, ₽ or $) and the brief fields. The "Fill in an example" button inserts a demo brief.
 
-![Форма брифа](demo/form.png)
+The interface is bilingual: RU and EN switch in the header or with `?lang=en`; with no choice, the language comes from the browser settings. The proposal language is chosen separately and defaults to the interface language.
 
-**Превью.** Слева документ в том виде, в каком его получит заказчик. Справа расчет, который вижу только я: уровень каждого этапа, часы, ставка, оценка токенов, сколько попыток понадобилось модели. В PDF расчет не попадает.
+![The brief form](demo/form.png)
 
-**История.** Все КП лежат в `output/` и открываются со страницы истории. Любое можно скачать или сгенерировать заново по тому же брифу.
+**Preview.** On the left, the document as the prospect will receive it. On the right, an estimate only I see: each stage's level, hours, rate, token estimate and how many attempts the model needed. The estimate doesn't go into the PDF.
 
-![История КП](demo/history.png)
+**History.** All proposals are kept in `output/` and open from the history page. Any of them can be downloaded or regenerated from the same brief.
 
-**PDF.** Две страницы: цель, решение со стеком, кейсы с цифрами, этапы со сроками и стоимостью, условия оплаты, что входит в работу, следующий шаг.
+![Proposal history](demo/history.png)
 
-| RU, стр. 1 | RU, стр. 2 | EN, стр. 1 |
+**PDF.** Two pages: goal, solution with the stack, case studies with figures, stages with timelines and costs, payment terms, what's included, next step.
+
+| RU, page 1 | RU, page 2 | EN, page 1 |
 |---|---|---|
 | ![](demo/pdf_ru_p1.png) | ![](demo/pdf_ru_p2.png) | ![](demo/pdf_en_p1.png) |
 
-Примеры целиком: [KP_lavanda_ru.pdf](demo/examples/KP_lavanda_ru.pdf) и [KP_sunset-bay_en.pdf](demo/examples/KP_sunset-bay_en.pdf). Оба сгенерированы по брифам из `examples/`, руками я их не правила.
+Full examples: [KP_lavanda_ru.pdf](demo/examples/KP_lavanda_ru.pdf) and [KP_sunset-bay_en.pdf](demo/examples/KP_sunset-bay_en.pdf). Both were generated from the briefs in `examples/`, and I didn't edit them by hand.
 
-## Результат
+## Results
 
-- КП на две страницы собирается за 20–40 секунд. Запрос к модели `gpt-6.1-sol` стоит около $0,02.
-- На четырех живых прогонах (два профиля, RU и EN) все КП прошли проверку голоса с первой попытки.
-- Цифры результатов модель не пишет вовсе, их подставляет шаблон из кейсов профиля.
-- 51 тест проходит без сети за пару секунд, еще два делают реальный запрос к OpenAI.
+- On my runs a two-page proposal takes about 20 to 40 seconds.
+- In four live runs (two profiles, RU and EN) every proposal passed the voice check on the first attempt.
+- The model never writes result figures; the template inserts them from the profile's case studies.
+- 61 tests: 59 run offline in a couple of seconds, two more make a real OpenAI request.
 
-Что пока не так. Проверка голоса ловит только то, что описывается правилом: стоп-фразы, шаблоны, объем. Слишком ровный текст она не заметит, поэтому перед отправкой я все равно перечитываю КП. Уровни S, M и L откалиброваны по моим задачам в Claude Code, и другому исполнителю таблицу часов придется настроить под себя.
+What's not there yet. The voice check only catches what a rule can describe: stop phrases, patterns, length. It won't notice text that's too even, so I still reread a proposal before sending it. The S, M and L levels are calibrated on my own tasks in Claude Code, and another provider will need to tune the hours table.
 
-## Стек технологий
+## Tech stack
 
-| Технология | Зачем используется |
+| Technology | What it's for |
 |---|---|
-| **Python 3.11** | Язык всего проекта: веб-интерфейс, генерация, расчет, CLI |
-| **Flask** | Веб-интерфейс: форма брифа, превью, скачивание PDF, история |
-| **OpenAI API** (Responses, Structured Outputs) | Пишет текст КП строго по схеме. Модель задается в `.env` |
-| **Pydantic** | Схема ответа модели, проверка брифа и профиля исполнителя |
-| **Jinja2** | HTML-шаблон КП и страницы веб-интерфейса |
-| **WeasyPrint** | Превращает HTML в PDF формата A4 с колонтитулами и номерами страниц |
-| **PyYAML** | Профили исполнителей: голос, кейсы, условия, палитра |
-| **python-dotenv** | Ключ API, ставка и коэффициенты расчета в `.env` |
-| **pytest** | Тесты схемы, расчета, проверки голоса, рендера, веб-маршрутов и лимитов демо |
-| **gunicorn + Docker Compose** | Запуск на сервере: несколько процессов, PDF-библиотеки уже в образе |
+| **Python 3.11** | Language of the whole project: web interface, generation, pricing, CLI |
+| **Flask** | Web interface: brief form, preview, PDF download, history |
+| **OpenAI API** (Responses, Structured Outputs) | Writes the proposal text to a strict schema. The model is set in `.env` |
+| **Pydantic** | The model's answer schema, brief and provider profile validation |
+| **Jinja2** | The proposal HTML template and the web interface pages |
+| **WeasyPrint** | Turns HTML into an A4 PDF with headers, footers and page numbers |
+| **PyYAML** | Provider profiles: voice, case studies, terms, palette |
+| **python-dotenv** | API key, rate and pricing coefficients in `.env` |
+| **pytest** | Tests for the schema, pricing, voice check, rendering, web routes and demo limits |
+| **gunicorn + Docker Compose** | Server deployment: several workers, PDF libraries already in the image |
 
-## Структура репозитория
+## Repository structure
 
-- `app.py`: веб-интерфейс на Flask.
-- `kp/`: ядро. Модели данных, промпты, генератор с повтором по замечаниям, проверка голоса, расчет стоимости, рендер HTML и PDF, CLI.
-- `kp/templates/`: шаблон КП и его стили.
-- `web/`: шаблоны и стили веб-интерфейса.
-- `profiles/`: профили исполнителей в YAML.
-- `fixtures/`: заготовленные ответы для работы без API.
-- `examples/`: два демо-брифа, RU и EN.
-- `scripts/import_cases.py`: переносит мои кейсы из кода сайта-портфолио в профиль.
-- `.claude/skills/kp-generator/`: скилл для Claude Code с тестами.
+- `app.py`: the Flask web interface.
+- `kp/`: the core. Data models, prompts, the generator with a retry on issues, the voice check, pricing, HTML and PDF rendering, CLI.
+- `kp/templates/`: the proposal template and its styles.
+- `web/`: web interface templates and styles.
+- `profiles/`: provider profiles in YAML.
+- `fixtures/`: prepared answers for running without the API.
+- `examples/`: two demo briefs, RU and EN.
+- `scripts/import_cases.py`: moves my case studies from the portfolio site code into the profile.
+- `.claude/skills/kp-generator/`: a Claude Code skill with tests.
 - `tests/`: pytest.
-- `demo/`: скриншоты и примеры PDF.
-- `Dockerfile`, `docker-compose.yml`: запуск в контейнере на сервере.
+- `demo/`: screenshots and sample PDFs.
+- `Dockerfile`, `docker-compose.yml`: running in a container on the server.
 
-## Запуск
+## Running it
 
-Нужны Python 3.11+ и системные библиотеки WeasyPrint. На macOS это `brew install pango`, на Ubuntu `apt install libpango-1.0-0 libpangoft2-1.0-0`.
+You need Python 3.11+ and WeasyPrint's system libraries: `brew install pango` on macOS, `apt install libpango-1.0-0 libpangoft2-1.0-0` on Ubuntu.
 
 ```bash
 git clone https://github.com/tatidzufri-lab/kp-generator.git && cd kp-generator
-make install      # виртуальное окружение, зависимости, .env из .env.example
+make install      # virtual environment, dependencies, .env from .env.example
 make run          # http://127.0.0.1:5050
 ```
 
-После установки приложение работает без API на заготовленных ответах. Откройте форму, нажмите «Заполнить пример» и «Сгенерировать КП».
+After installation the app runs without the API on prepared answers. Open the form, press "Fill in an example" and "Generate proposal".
 
-Для генерации через OpenAI впишите в `.env`:
+To generate with OpenAI, put this in `.env`:
 
 ```dotenv
 OPENAI_API_KEY=sk-...
@@ -109,28 +111,28 @@ OPENAI_MODEL=gpt-6.1-sol
 KP_MOCK=0
 ```
 
-Если ключа нет, приложение само переходит на заготовки. В форме есть галочка «без API», чтобы проверить сценарий, не тратя токены.
+If there's no key, the app falls back to the prepared answers by itself. The form has a "no API" checkbox to test the flow without spending tokens.
 
 ```bash
-make check                  # импортируются ли WeasyPrint и остальные библиотеки
-make test                   # тесты без сети
-KP_LIVE_TESTS=1 make test   # плюс два теста с реальным запросом к OpenAI
+make check                  # are WeasyPrint and the other libraries importable
+make test                   # offline tests
+KP_LIVE_TESTS=1 make test   # plus two tests with a real OpenAI request
 ```
 
-### Docker и публичное демо
+### Docker and the public demo
 
 ```bash
 cp .env.example .env
 docker compose up -d --build      # http://127.0.0.1:8004
 ```
 
-В образе уже есть Pango для WeasyPrint и шрифты, КП сохраняются в `./data` на хосте. Порт открыт только на `127.0.0.1`, наружу его отдает nginx.
+The image already has Pango for WeasyPrint and the fonts; proposals are saved to `./data` on the host. The port is open only on `127.0.0.1`, and nginx exposes it.
 
-Для публичного демо в `.env` включается `KP_PUBLIC_DEMO=1`. Тогда каждый посетитель видит только свои КП, а генераций через OpenAI доступно `KP_DEMO_MAX_PER_SESSION` за сессию (по умолчанию 5) и `KP_DEMO_MAX_PER_DAY` в сутки на всех (50). Генерации без API лимит не расходуют. Обязателен `FLASK_SECRET_KEY`: без общего ключа процессы gunicorn не узнают сессии друг друга, и приложение в этом режиме не стартует.
+For the public demo, set `KP_PUBLIC_DEMO=1` in `.env`. Then each visitor sees only their own proposals, and OpenAI generations are limited to `KP_DEMO_MAX_PER_SESSION` per session (5 by default) and `KP_DEMO_MAX_PER_DAY` per day for everyone (50). Generations without the API don't count against the limit. `FLASK_SECRET_KEY` is required: without a shared key the gunicorn workers don't recognize each other's sessions, and the app won't start in this mode.
 
-Про macOS. WeasyPrint ищет Pango из Homebrew через `DYLD_FALLBACK_LIBRARY_PATH`, а SIP стирает эту переменную при запуске `/bin/sh`. Поэтому в Makefile она задается прямо перед `python` в каждой команде. Без make запускайте так: `DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib .venv/bin/python ...`. Порт 5050 выбран потому, что 5000 на macOS занят AirPlay.
+On macOS, WeasyPrint finds Homebrew's Pango through `DYLD_FALLBACK_LIBRARY_PATH`, and SIP strips that variable when `/bin/sh` starts. So the Makefile sets it right before `python` in every command. Without make, run it like this: `DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib .venv/bin/python ...`. Port 5050 is used because 5000 is taken by AirPlay on macOS.
 
-### Командная строка
+### Command line
 
 ```bash
 .venv/bin/python -m kp.cli profiles
@@ -138,63 +140,63 @@ docker compose up -d --build      # http://127.0.0.1:8004
 .venv/bin/python -m kp.cli generate --brief examples/brief_en.json --profile demo_agency --mock
 ```
 
-`--lang ru|en` меняет язык брифа, `--mock` включает работу без API, `--out` задает папку для результата. Бриф хранится в JSON: обязательные поля `company`, `industry`, `task`, необязательные `contact_name`, `budget`, `deadline`, `notes`, `language`.
+`--lang ru|en` changes the brief language, `--mock` runs without the API, `--out` sets the output folder. A brief is JSON: required fields `company`, `industry`, `task`; optional `contact_name`, `budget`, `deadline`, `notes`, `language`.
 
-### Скилл для Claude Code
+### Claude Code skill
 
-В `.claude/skills/kp-generator/` лежит скилл, который собирает КП прямо из чата. Я пересказываю созвон своими словами, скилл составляет бриф, переспрашивает, если не хватает компании или сути задачи, запускает генерацию и сверяет результат с брифом. В ответ приходят путь к PDF, сумма, срок и замечания. Скилл подхватывается сам, если открыть Claude Code в папке проекта.
+`.claude/skills/kp-generator/` holds a skill that builds a proposal right from the chat. I retell the call in my own words, the skill drafts the brief, asks again if the company or the core of the task is missing, runs the generation and checks the result against the brief. It returns the PDF path, the total, the timeline and any issues. The skill loads automatically when Claude Code is opened in the project folder.
 
-В папке `evals/` внутри скилла три тестовых сценария в формате `claude plugin eval`.
+The skill's `evals/` folder has three test scenarios in the `claude plugin eval` format.
 
-### Как считается стоимость
+### How the price is calculated
 
 ```
-часы этапа  = часы агента × KP_TEST_MULTIPLIER + часы коммуникации
-цена этапа  = часы этапа × ставка + токены агента × курс   (вверх до 500 ₽ / $10)
-дни этапа   = часы этапа / KP_HOURS_PER_CLIENT_DAY, вверх до целого
-срок        = сумма дней + 1 день на согласование
+stage hours  = agent hours × KP_TEST_MULTIPLIER + communication hours
+stage price  = stage hours × rate + agent tokens × exchange rate   (rounded up to 500 ₽ / $10)
+stage days   = stage hours / KP_HOURS_PER_CLIENT_DAY, rounded up
+timeline     = sum of days + 1 day for sign-off
 ```
 
-Время агента умножается на 3: агент пишет код, а вдвое больше уходит на проверку и тесты. Последний этап (тестирование и сдача) всегда уровня S, потому что тесты уже заложены в каждый этап. Часы и токены для каждого уровня, ставка и курс задаются в `.env`.
+Agent time is multiplied by 3: the agent writes the code, and twice as much goes into review and tests. The last stage (testing and handover) is always level S, because testing is already built into every stage. Hours and tokens per level, the rate and the exchange rate are set in `.env`.
 
-### Свой профиль исполнителя
+### Your own provider profile
 
-Профиль лежит в `profiles/<id>.yaml` и появляется в форме без правки кода. Самый короткий пример: `profiles/demo_agency.yaml`.
+A profile lives in `profiles/<id>.yaml` and shows up in the form without code changes. The shortest example is `profiles/demo_agency.yaml`.
 
 ```yaml
 id: my_studio
-demo: false                 # true ставит в КП пометку «Демо-профиль»
-executor:                   # имя, должность, слоган, контакты (ru/en)
+demo: false                 # true adds a "Demo profile" mark to the proposal
+executor:                   # name, title, tagline, contacts (ru/en)
 brand:                      # primary, accent, background, text, heading_font, body_font
 voice:                      # tone, rules, stop_phrases (ru/en), forbid_yo, forbid_emoji,
                             # max_long_dashes, word_limit: [250, 400]
 services: {ru: [...], en: [...]}
-skills: [FastAPI, PostgreSQL, ...]   # технологии помимо стека кейсов
-tiers: {S: ..., M: ..., L: ...}      # что значит каждый уровень, подсказка для модели
+skills: [FastAPI, PostgreSQL, ...]   # technologies beyond the case studies' stack
+tiers: {S: ..., M: ..., L: ...}      # what each level means, a hint for the model
 terms:                      # included, excluded, payment_options, next_step_fixed
-optional_blocks:            # блоки с готовым текстом; модель решает, включать ли их
-cases:                      # или cases_file: my_studio.cases.yaml
+optional_blocks:            # blocks with ready text; the model decides whether to include them
+cases:                      # or cases_file: my_studio.cases.yaml
   - id: flower-shop
     title: {ru: ..., en: ...}
     summary: {ru: ..., en: ...}
-    results: {ru: [...], en: [...]}   # цифры попадают в КП как есть
+    results: {ru: [...], en: [...]}   # figures go into the proposal as is
     stack: [WordPress, amoCRM API]
-    when_to_use: интернет-магазины, интеграции с CRM
+    when_to_use: online stores, CRM integrations
 ```
 
-Шрифты Inter и Space Grotesk лежат в `fonts/` под лицензией OFL. В Space Grotesk нет кириллицы, поэтому в русских КП заголовки набираются Inter.
+The Inter and Space Grotesk fonts are in `fonts/` under the OFL license. Space Grotesk has no Cyrillic, so Russian proposals set headings in Inter.
 
-## Планы развития
+## Roadmap
 
-- Редактор профиля в веб-интерфейсе вместо правки YAML.
-- Перегенерация одного раздела КП без пересборки всего документа.
-- DeepSeek, GigaChat и YandexGPT для заказчиков, которым нужна российская модель.
-- Пакетная генерация из CSV для рассылки по базе.
-- Импорт брифа из письма или заказа на фриланс-бирже.
-- Экспорт в DOCX для заказчиков, которые правят КП у себя.
+- A profile editor in the web interface instead of editing YAML.
+- Regenerating one section of a proposal without rebuilding the whole document.
+- DeepSeek, GigaChat and YandexGPT for clients who need a Russian model.
+- Batch generation from CSV for mailing a list.
+- Importing a brief from an email or a freelance marketplace order.
+- DOCX export for clients who edit proposals themselves.
 
-Проект вырос из учебного задания VM40 «КП на автопилоте» курса «Вайб-маркетинг», где КП генерировались из CSV для рассылки. Я довела его до генератора по брифу в рамках финального проекта курса по Claude Code.
+The project grew out of the VM40 "Proposals on autopilot" assignment in the Vibe Marketing course, where proposals were generated from a CSV for a mailing. I took it further into a brief-driven generator as the final project of a Claude Code course.
 
-## Автор
+## Author
 
-Татьяна Дзюбас, AI-инженер по автоматизации. Делаю Telegram-ботов, RAG-ассистентов и LLM-агентов, которые снимают рутину с небольших команд. Кейсы и контакты на [tatidzufri.com](https://tatidzufri.com).
+Tetiana Dziubas, AI automation engineer. I build Telegram bots, RAG assistants and LLM agents that take routine work off small teams. Case studies and contact: [tatidzufri.com/en](https://tatidzufri.com/en/).
