@@ -46,7 +46,7 @@ def test_all_profiles_load():
 def test_tatiana_cases_imported(tatiana):
     assert len(tatiana.cases) == 13
     study = {c.id for c in tatiana.cases if c.study_project}
-    assert study == {"business-reports", "llm-fine-tuning"}
+    assert study == {c.id for c in tatiana.cases}  # с 24.11.2026 все кейсы учебные
     for c in tatiana.cases:
         assert "учебный проект" not in c.title.ru.lower()
         assert c.url and c.url.en.startswith("https://tatidzufri.com/en/case/")

@@ -1,25 +1,26 @@
-# Сгенерировано scripts/import_cases.py — руками не править, перезапустить скрипт.
-# Источник: сайт tatidzufri.com (тексты RU/EN) + справочник кейсов (когда упоминать).
-# Дата импорта: 2026-11-16
+# Сгенерировано scripts/import_cases.py, затем результаты переписаны вручную 25.11.2026:
+# бизнес-эффекты кейсов заморожены (решение Татьяны 24.11), здесь только технические факты
+# и замеры на моих прогонах. Повторный импорт с сайта вернет старые цифры: после него сверить.
+# Источник: сайт tatidzufri.com (тексты RU/EN) + справочник кейсов + numbers_verification_2026-11-24.md.
 cases:
 - id: vk-generator
   number: 1
-  study_project: false
+  study_project: true
   title:
     ru: Автоматизация контент-маркетинга (VK Generator)
     en: 'VK Generator: a Telegram bot that writes social media posts'
   summary:
-    ru: Кастомный Telegram-бот на GPT-4o для генерации постов ВКонтакте — идеи, структура, хештеги за 2 минуты вместо 40.
-    en: A Telegram bot running on GPT-4o that drafts VK posts in the brand's voice, with hashtags and VK formatting already done.
+    ru: 'Telegram-бот на GPT-4o и GigaChat пишет посты для ВКонтакте в голосе эксперта: идеи, готовые посты, прогревы, продающие тексты, с оформлением под ВК.'
+    en: A Telegram bot on GPT-4o and GigaChat that drafts VK posts in an expert's voice, with hashtags and VK formatting already done.
   results:
     ru:
-    - 'Экономия времени: создание поста занимает 2 минуты вместо 40'
-    - 'Охваты: +30%'
-    - 'Заявки из соцсетей: +15%'
+    - 'Анкета эксперта из 5 вопросов: профиль подставляется в каждый запрос'
+    - '7 сценариев: от идей для постов до доработки черновика'
+    - 'Две модели на выбор: OpenAI и GigaChat'
     en:
-    - One post now takes 2 minutes instead of 40
-    - Reach up 30%
-    - 15% more leads from social media
+    - A five-question expert profile goes into every request
+    - Seven scenarios, from post ideas to editing a draft
+    - 'Two models to choose from: OpenAI and GigaChat'
   stack:
   - Python
   - aiogram
@@ -31,7 +32,7 @@ cases:
   demo_url: null
 - id: rag-assistant
   number: 2
-  study_project: false
+  study_project: true
   title:
     ru: Мультимодельный AI-ассистент с контролем качества (RAG + RAGAS)
     en: Multi-model RAG assistant with quality control (RAGAS)
@@ -40,11 +41,11 @@ cases:
     en: A Telegram assistant running on ChatGPT and GigaChat that answers from a knowledge base and scores every answer for accuracy with RAGAS.
   results:
     ru:
-    - 'Автоматизация: 90% вопросов обрабатывается без участия человека'
-    - 'Контроль качества: точность каждого ответа оценивается автоматически через RAGAS'
-    - 'Мультимодельность: работает на двух LLM, ChatGPT и GigaChat'
+    - 'RAGAS на моем прогоне из 50 тестовых вопросов: 0,8412 у ChatGPT и 0,8413 у GigaChat'
+    - Точность каждого ответа оценивается автоматически через RAGAS
+    - 'Работает на двух LLM: ChatGPT и GigaChat'
     en:
-    - 90% of questions handled without a human
+    - 'RAGAS on my 50-question test run: 0.8412 for ChatGPT, 0.8413 for GigaChat'
     - Accuracy of every answer scored automatically with RAGAS
     - 'Runs on two LLMs: ChatGPT and GigaChat'
   stack:
@@ -61,55 +62,57 @@ cases:
   demo_url: https://telegram.me/RAG_based_assist_bot
 - id: competitor-ai
   number: 3
-  study_project: false
+  study_project: true
   title:
-    ru: Платформа анализа конкурентов (CompetitorAI)
-    en: 'CompetitorAI: daily competitor monitoring with AI summaries'
+    ru: AI-анализ материалов конкурентов (CompetitorAI)
+    en: 'CompetitorAI: AI analysis of competitor materials'
   summary:
-    ru: 'Платформа автоматического сбора и AI-анализа данных конкурентов: каждый день проверяет их сайты и соцсети и присылает резюме важных изменений.'
-    en: A platform that checks competitor websites and social media every day and sends a short summary when something important changes.
+    ru: 'Веб-приложение разбирает текст, изображение или сайт конкурента по ссылке и возвращает структурированный отчет: сильные и слабые стороны, рекомендации.'
+    en: A web app that analyzes a competitor's text, image or website by link and returns a structured report with strengths, weaknesses and recommendations.
   results:
     ru:
-    - 'Осведомленность: время реакции сократилось с 30 дней до 24 часов'
-    - 'Стратегия: выявлено 3 новых тренда для рекламных кампаний'
-    - 'Ресурс: освобождено 40 часов рабочего времени маркетолога в месяц'
+    - 'Три режима анализа: текст, изображение, сайт по ссылке'
+    - Оценка визуального стиля по шкале от 0 до 10 с рекомендациями
+    - История последних 10 запросов для сравнения конкурентов
     en:
-    - 'Reaction time: from 30 days to 24 hours'
-    - 3 new trends found for ad campaigns
-    - 40 hours of marketer time freed up every month
+    - 'Three analysis modes: text, image, website by link'
+    - Visual style rated from 0 to 10, with suggestions
+    - History of the last 10 requests to compare competitors
   stack:
   - Python
-  - BeautifulSoup
-  - GPT-4 Vision
-  - Pandas
-  when_to_use: мониторинг конкурентов, аналитика рынка, автоматизация маркетинга, задачи на сбор и анализ данных, автоматизация Google Ads-стратегии
+  - FastAPI
+  - Selenium
+  - OpenAI API
+  - PyQt6
+  when_to_use: анализ конкурентов, маркетинговая аналитика, разбор сайтов, баннеров и рекламных текстов, мультимодальные задачи (текст и изображения)
   url:
     ru: https://tatidzufri.com/case/competitor-ai
     en: https://tatidzufri.com/en/case/competitor-ai
   demo_url: https://competitor.tatidzufri.com
 - id: web-scraper
   number: 4
-  study_project: false
+  study_project: true
   title:
     ru: Универсальный веб-парсер (Universal Web Scraper)
     en: 'Universal Web Scraper: custom data collection from websites'
   summary:
-    ru: Гибкий и масштабируемый парсер, который настраивается под конкретные источники и автоматически извлекает с сайтов структурированные данные.
-    en: A scraper tuned to the client's sources. It collects prices, product availability, contacts and news and loads them into their systems.
+    ru: Парсер сам определяет тип сайта, собирает данные с пагинацией и строит отчеты в CSV, HTML и PDF с графиками. Работает через Telegram-бота или командную строку.
+    en: A scraper that detects the site type, collects paginated data and builds CSV, HTML and PDF reports with charts, via a Telegram bot or the command line.
   results:
     ru:
-    - 'Затраты на сбор данных: –90%'
-    - 'Актуальность: получение информации в реальном времени или по расписанию'
-    - 'Качество данных: устранение человеческого фактора и ошибок ручного ввода'
+    - Пагинация до 50 страниц с паузой между запросами
+    - 'Отчеты сразу в трех форматах: CSV, HTML и PDF с графиками'
+    - Сбор можно повторять в любой момент, отчет всегда в одном виде
     en:
-    - 90% lower data collection costs
-    - Fresh data in real time or on a schedule
-    - Human error from manual data entry is gone
+    - Pagination up to 50 pages with a pause between requests
+    - 'Reports in three formats at once: CSV, HTML and PDF with charts'
+    - Collection can be rerun anytime, and the report keeps the same shape
   stack:
   - Python
-  - Scrapy
-  - Selenium
-  - Beautiful Soup
+  - Requests
+  - BeautifulSoup
+  - Pandas
+  - WeasyPrint
   when_to_use: e-commerce, агрегаторы цен, мониторинг наличия товаров, сбор контактов, любые задачи на регулярное извлечение данных с сайтов
   url:
     ru: https://tatidzufri.com/case/web-scraper
@@ -156,12 +159,12 @@ cases:
     en: I fine-tuned the open Vikhr-Llama model with LoRA so it writes in a given brand's tone of voice. It runs locally on ordinary hardware, and the data never goes to the cloud.
   results:
     ru:
-    - 'Ускорение контента: тексты создаются в 3–5 раз быстрее'
-    - Tone of Voice бренда встроен на уровне модели
+    - 'Датасет из 300 примеров: 240 для обучения, по 30 для валидации и теста'
+    - LoRA-адаптер около 0,9% параметров, голос бренда встроен в модель
     - 'Полная приватность: модель работает локально, данные не уходят в облако'
     en:
-    - Content comes out 3–5x faster
-    - A brand's tone of voice is built into the model itself
+    - 'A 300-example dataset: 240 for training, 30 each for validation and test'
+    - A LoRA adapter of about 0.9% of the parameters builds the brand voice into the model
     - 'Full privacy: the model runs locally, data stays off the cloud'
   stack:
   - Python
@@ -176,27 +179,26 @@ cases:
   demo_url: null
 - id: ai-support-assistant
   number: 7
-  study_project: false
+  study_project: true
   title:
-    ru: AI-ассистент с ролевой маршрутизацией для клиентов и команды ретрит-центра
-    en: One AI assistant for a retreat center's clients and its team
+    ru: AI-ассистент с ролевой маршрутизацией для гостей и команды
+    en: 'Multi-agent chat widget: one assistant for guests and the team'
   summary:
-    ru: 'Многоагентный чат-виджет на OpenAI Agent Builder с системой ролей: клиенты получают ответы на вопросы, а команда — шаблоны и скрипты по кодовому слову.'
-    en: A multi-agent chat widget built on OpenAI Agent Builder. Clients ask questions about the retreat; staff type a code word and get templates and scripts.
+    ru: 'Многоагентный чат-виджет на OpenAI Agents SDK и своем сервере ChatKit: гости получают ответы на вопросы, а команда по кодовому слову получает шаблоны и скрипты. Учебный сценарий ретрит-центра.'
+    en: A multi-agent chat widget on the OpenAI Agents SDK and a self-hosted ChatKit server. Guests ask questions; staff type a code word and get templates and scripts. A training scenario of a retreat center.
   results:
     ru:
-    - 'Единая точка входа: один ассистент обслуживает и клиентов, и команду'
-    - 'Повышенная безопасность: строгая изоляция служебной информации и защита от prompt-инъекций'
-    - Ответы на вопросы клиентов 24/7
-    - 'Оптимизация работы команды: мгновенный доступ к необходимым шаблонам и скриптам'
+    - 'Один ассистент для двух аудиторий: гостей и команды'
+    - Служебная информация изолирована, защита от prompt-инъекций
+    - Переезд с Agent Builder на код за один день, проверен на 14 сценариях
     en:
-    - 'One assistant serves two audiences: clients and the team'
-    - Internal information is strictly isolated from clients
-    - Answers around the clock, with protection against prompt injections
-    - The team gets templates and scripts instantly
+    - 'One assistant for two audiences: guests and the team'
+    - Internal information is isolated, with protection against prompt injections
+    - Moved from Agent Builder to code in one day, checked on 14 scenarios
   stack:
-  - OpenAI Agent Builder
-  - OpenAI API
+  - OpenAI Agents SDK
+  - OpenAI ChatKit
+  - openai-guardrails
   - FastAPI
   - Custom HTML/JS/CSS
   when_to_use: чат-виджет на сайт, FAQ-бот, мультиагентные системы, разграничение ролей, безопасность, ретрит / wellness / сервисный бизнес, задачи с разными аудиториями у одного бота
@@ -206,22 +208,22 @@ cases:
   demo_url: https://retreat.tatidzufri.com
 - id: lead-qualifier
   number: 8
-  study_project: false
+  study_project: true
   title:
     ru: 'AI-квалификатор лидов: как превратить диалог в готовую заявку'
     en: 'AI lead qualifier: from a chat to a ready lead card'
   summary:
-    ru: AI-ассистент «Лея» в Telegram на базе GPT-5.2-mini ведет эмпатичный диалог, выясняет боли клиента и автоматически формирует структурированную заявку для отдела продаж.
-    en: Leya, an AI assistant in Telegram, finds out what a new lead needs in a warm, human chat. Sales gets a structured lead card.
+    ru: AI-ассистент «Лея» в Telegram на OpenAI ведет теплый диалог вместо анкеты, выясняет запрос и собирает структурированную заявку для куратора.
+    en: Leya, an AI assistant in Telegram, finds out what a new lead needs in a warm, human chat. The curator gets a structured lead card.
   results:
     ru:
-    - 100% автоматизация первичной квалификации лидов
-    - Рост лояльности клиентов за счет мгновенной и теплой реакции бота
-    - Менеджеры получают готовые карточки лидов со всей предысторией
+    - 'Первичную квалификацию бот проводит сам: имя, запрос, формат, даты, контакт'
+    - Куратор получает готовую карточку заявки со всей предысторией
+    - Если OpenAI недоступен, запись продолжается на встроенных правилах
     en:
-    - First-round lead qualification is 100% automated
-    - Leads get an instant, warm reply, which builds loyalty
-    - Managers receive ready lead cards with the full backstory
+    - 'The bot runs the first qualification itself: name, request, format, dates, contact'
+    - The curator receives a ready lead card with the full backstory
+    - If OpenAI is unavailable, sign-up continues on built-in rules
   stack:
   - Python
   - aiogram 3
@@ -235,7 +237,7 @@ cases:
   demo_url: https://t.me/retreat_poznai_bot
 - id: path-to-self
   number: 9
-  study_project: false
+  study_project: true
   title:
     ru: 'AI-проводник «Путь к себе»: Telegram-бот для эмоционально сложных продуктов'
     en: 'Path to Self: an AI guide bot for emotionally complex products'
@@ -244,15 +246,13 @@ cases:
     en: A Telegram bot that talks a client through what they actually need, then puts together a personal offer for the sales team.
   results:
     ru:
-    - Увеличение конверсии из первого контакта
-    - Повышение лояльности клиентов благодаря индивидуальному подходу
-    - Освобождение времени команды от рутинной квалификации
-    - Клиент приходит к менеджеру уже готовым к решению
+    - 5 рефлексивных вопросов, 3 портрета аудитории, 3 формата на выбор
+    - При тревожных сигналах разговор останавливается, бот дает контакты помощи
+    - Обезличенная сводка каждого разговора сохраняется в PostgreSQL
     en:
-    - Higher conversion from first contact
-    - Clients stay more loyal because the approach is personal
-    - Frees up team time spent on routine qualification
-    - Clients come to the manager ready to decide
+    - 5 reflective questions, 3 audience portraits, 3 formats to choose from
+    - On warning signs the conversation stops and the bot shares help contacts
+    - An anonymized summary of every conversation is saved to PostgreSQL
   stack:
   - Python
   - aiogram
@@ -265,7 +265,7 @@ cases:
   demo_url: https://t.me/put_poznay_bot
 - id: ai-reviews-manager
   number: 10
-  study_project: false
+  study_project: true
   title:
     ru: 'AI-управление отзывами на сайте: репутация под контролем 24/7 и уведомления в Telegram'
     en: AI review assistant for a website, with alerts in Telegram
@@ -274,15 +274,13 @@ cases:
     en: Reviews on the website get a tailored reply in the brand's style, and the team sees each new one in Telegram.
   results:
     ru:
-    - Репутация под контролем 24/7
-    - Персонализированные ответы на отзывы без участия менеджера
-    - 'Сокращение рутины: команда фокусируется на стратегии'
-    - Ценные инсайты из отзывов без ручной обработки
+    - Ответ на каждый отзыв под его тон, до трех предложений
+    - Уведомление о каждом новом отзыве в Telegram
+    - Если OpenAI недоступен, работают запасные ответы
     en:
-    - Reputation under control 24/7
-    - Personal replies to reviews without a manager
-    - 'Less routine: the team works on strategy'
-    - Useful insights from reviews, no manual sorting
+    - A reply to every review matched to its tone, up to three sentences
+    - An alert about every new review in Telegram
+    - If OpenAI is unavailable, fallback replies keep it running
   stack:
   - Python
   - FastAPI
@@ -296,7 +294,7 @@ cases:
   demo_url: https://retreat.tatidzufri.com/#reviews
 - id: dialog-auditor
   number: 11
-  study_project: false
+  study_project: true
   title:
     ru: 'AI-аудитор диалогов: контроль качества продаж и Tone of Voice'
     en: 'AI call auditor: sales stages and tone of voice checked by a bot'
@@ -305,15 +303,13 @@ cases:
     en: A Telegram bot transcribes managers' calls and checks whether they followed your sales stages and tone of voice. You get a report with recommendations.
   results:
     ru:
-    - Контроль качества звонков без ручного прослушивания
-    - Объективная обратная связь менеджерам с конкретными рекомендациями
-    - Единообразие в общении с клиентами
-    - Данные для управления продажами и стратегического планирования
+    - Чек-лист из 11 блоков, нарушения тона с точной цитатой менеджера
+    - Звонки на русском и английском, аудит на языке разговора
+    - История проверок в PostgreSQL показывает, какие пункты проседают
     en:
-    - Call quality control without listening to recordings by hand
-    - Managers get objective feedback with specific recommendations
-    - The whole team talks to clients in a consistent way
-    - Data for managing sales and for strategic planning
+    - An 11-point checklist, tone violations with the manager's exact quote
+    - Calls in Russian and English, the audit in the call's language
+    - Check history in PostgreSQL shows which points slip
   stack:
   - Python
   - AssemblyAI
@@ -326,29 +322,27 @@ cases:
   demo_url: https://t.me/curator_audit_bot
 - id: content-generator
   number: 12
-  study_project: false
+  study_project: true
   title:
     ru: 'Генератор контента в голосе бренда: пять форматов, пять настроений и две нейросети'
     en: 'Brand-voice content generator: five formats, five moods, two models'
   summary:
-    ru: 'Веб-приложение для создания контента в фирменной тональности: пост, сторис, подпись, идеи и письмо для рассылки — с выбором настроения и переключением между GPT-4o и DeepSeek.'
-    en: A web app that writes posts, stories, captions, idea lists and newsletters in one brand voice. Pick a mood and a format, switch between GPT-4o and DeepSeek R1.
+    ru: 'Веб-приложение для текстов в фирменной тональности: пост, сторис, подпись, идеи и письмо для рассылки, с выбором настроения и переключением между GPT-4o и бесплатной моделью OpenRouter.'
+    en: A web app that writes posts, stories, captions, idea lists and newsletters in one brand voice. Pick a mood and a format, switch between GPT-4o and a free OpenRouter model.
   results:
     ru:
-    - 'Скорость: готовый текст за минуту вместо получаса на черновик'
-    - 'Единый голос бренда: тональность и словарь заданы в самом приложении, а не держатся в голове автора'
-    - 'Покрытие задач: 25 комбинаций, пять настроений на пять форматов контента'
-    - 'Экономия: черновики генерируются бесплатной моделью, платная остается для чистовых текстов'
+    - Тональность и словарь бренда заданы в приложении, а не держатся в голове автора
+    - '25 комбинаций: пять настроений на пять форматов контента'
+    - Черновики генерируются бесплатной моделью, платная остается для чистовых текстов
     en:
-    - 'Speed: a finished text in a minute instead of half an hour on a draft'
-    - 'One brand voice: tone and vocabulary are set in the app itself, so they don''t depend on who''s writing'
+    - Tone and vocabulary are set in the app itself, so they don't depend on who's writing
     - '25 combinations: five moods across five content formats'
-    - 'Lower costs: drafts run on a free model, the paid one is kept for final copy'
+    - Drafts run on a free model, the paid one is kept for final copy
   stack:
   - Python
   - Streamlit
   - OpenAI API (GPT-4o)
-  - OpenRouter (DeepSeek R1)
+  - OpenRouter
   - Docker
   when_to_use: SMM-автоматизация, генерация контента, копирайтинг под Tone of Voice, задачи на экономию времени у маркетолога/копирайтера, выбор между несколькими LLM в одном инструменте
   url:
@@ -357,7 +351,7 @@ cases:
   demo_url: https://content.tatidzufri.com
 - id: banner-funnel
   number: 13
-  study_project: false
+  study_project: true
   title:
     ru: 'Персонализированные баннеры для Telegram-воронки: три этапа прогрева без дизайнера'
     en: 'Personalized banners for a Telegram funnel: three warm-up stages, no designer'
@@ -366,13 +360,13 @@ cases:
     en: A tool that makes a banner for every subscriber with their job title and company, renders it as an image and sends it out at each stage of the funnel.
   results:
     ru:
-    - 'Персонализация: каждый подписчик получает баннер со своей должностью и компанией'
-    - 'Скорость: серия из 15 макетов собирается за полторы минуты и без участия дизайнера'
-    - 'Гибкость: шесть готовых профилей бренда — от сдержанного минимализма до премиального стиля'
-    - 'Единая верстка: девять шаблонов закрывают три этапа воронки по три варианта на каждый'
+    - Каждый подписчик получает баннер со своей должностью и компанией
+    - На моем прогоне серия из 15 макетов собралась примерно за полторы минуты
+    - Шесть готовых профилей бренда, от сдержанного минимализма до премиального стиля
+    - Девять шаблонов закрывают три этапа воронки, по три варианта на каждый
     en:
     - Every subscriber gets a banner with their own job title and company
-    - A series of 15 banners is ready in 90 seconds without a designer
+    - In my test run a series of 15 banners was ready in about 90 seconds
     - Six ready brand profiles, from restrained minimalism to a premium look
     - Nine templates cover the three funnel stages, three variants each
   stack:
